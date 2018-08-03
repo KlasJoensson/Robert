@@ -6,6 +6,7 @@ import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.xlent.robin.Robin;
@@ -14,19 +15,23 @@ class RobotTest {
 
 	Robin robot;
 	
-	/**
-	 * Tests to initiate the robot.
-	 */
-	@Test
-	void InitTest() {
+	private void instanciateRobot() {
 		try {
-			robot = Robin.getInstance();
-			assertNotNull(robot);
+			robot = Robin.getInstance();			
 		} catch (AWTException e) {
 			fail("Could not initiate: " + e.getMessage() );
 			e.printStackTrace();
 		}
-		
+
+	}
+	
+	/**
+	 * Tests to initiate the robot.
+	 */
+	@Test
+	void testGetInstance() {
+		instanciateRobot();
+		assertNotNull(robot);
 	}
 	
 	/**
@@ -34,6 +39,7 @@ class RobotTest {
 	 */
 	@Test
 	void testMoveMouseTo() {
+		instanciateRobot();
 		robot.moveMouseTo(100, 100);
 		Point location = MouseInfo.getPointerInfo().getLocation();
 		assertAll("Move mouse to [100 ,100]", 
@@ -46,6 +52,7 @@ class RobotTest {
 	 */
 	@Test
 	void testMoveMouse() {
+		instanciateRobot();
 		Point beforeMove = MouseInfo.getPointerInfo().getLocation();
 		robot.moveMouse(50, 25);
 		Point afterMove = MouseInfo.getPointerInfo().getLocation();
