@@ -40,7 +40,7 @@ public class Robin {
 	/**
 	 * Makes a left click with the mouse
 	 */
-	public static void leftClick() {
+	public void leftClick() {
 		robert.mousePress(InputEvent.BUTTON1_MASK);
 		robert.delay(200);
 		robert.mouseRelease(InputEvent.BUTTON1_MASK);
@@ -50,7 +50,7 @@ public class Robin {
 	/*
 	 * Makes a double click with the left mouse button
 	 */
-	public static void dubbleClick() {
+	public void dubbleClick() {
 		leftClick();
 		robert.delay(500);
 		leftClick();
@@ -62,7 +62,7 @@ public class Robin {
 	 * @param x The x-coordinate to move the mouse to
 	 * @param y The y-coordinate to move the mouse to
 	 */
-	public static void moveMouseTo(int x, int y) {
+	public void moveMouseTo(int x, int y) {
 		robert.mouseMove(x, y);
 		robert.delay(500);
 	}
@@ -73,7 +73,7 @@ public class Robin {
 	 * @param x The number of pixels the mouse will move along the x-axis
 	 * @param y The number of pixels the mouse will move along the y-axis
 	 */
-	public static void moveMouse(int x, int y) {
+	public void moveMouse(int x, int y) {
 		Point location = MouseInfo.getPointerInfo().getLocation();
 		moveMouseTo(location.x + x, location.y + y);
 	}
@@ -81,7 +81,7 @@ public class Robin {
 	/*
 	 * Types a string, at the moment it only handles [A-Z]
 	 */
-	public static void type(String str) {
+	public void type(String str) {
 		byte[] bytes = str.getBytes();
 		for (byte b:bytes) {
 			int code = b;
@@ -96,7 +96,7 @@ public class Robin {
 	 * 
 	 * @param i An integer that corresponds to the wanted key
 	 */
-	private static void pressKey(int i) {
+	private void pressKey(int i) {
 		robert.delay(40);
 		robert.keyPress(i);
 		robert.keyRelease(i);
