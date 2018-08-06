@@ -4,7 +4,11 @@ import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 /**
  * This is a wrapper class to make the use of java.awt.Robot easier.
@@ -92,14 +96,44 @@ public class Robin {
 	}
 	
 	/**
-	 * Presses a key on the keyboard.
+	 * Presses a key on the keyboard. The integer is the same as the one used by KeyEvent.
 	 * 
 	 * @param i An integer that corresponds to the wanted key
 	 */
 	private void pressKey(int i) {
+		System.out.print( KeyEvent.getKeyText(i) );
 		robert.delay(40);
 		robert.keyPress(i);
-		robert.keyRelease(i);
+	}
+	
+	/**
+	 * Writes a string in small caps.
+	 * 
+	 * @param str The string to be written
+	 */
+	public void write(String str) {
+		str.chars().forEach( c -> pressKey( (char) c) );
+	}
+	
+	public void pressKey(char c) {
+		
+		int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+		if (keyCode == KeyEvent.VK_UNDEFINED)
+			throw new IllegalArgumentException("Could not find any code for the char '" + c + "'.");
+		else {
+			if(c >'A' && c < 'Z')
+				robert.keyPress(KeyEvent.SHIFT_DOWN_MASK);
+			pressKey(keyCode);
+		}
+	}
+	
+	public void pressCommandPlusKey(char c) {
+		// TODO How to simulate the command-key?
+		robert.delay(40);
+		robert.keyPress( KeyEvent.META_DOWN_MASK );
+		robert.delay(40);
+		robert.keyPress(c);
+		//robert.keyRelease( Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() );
 	}
 	
 }
