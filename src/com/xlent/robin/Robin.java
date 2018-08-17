@@ -101,6 +101,7 @@ public class Robin {
 	 * @param i An integer that corresponds to the wanted key
 	 */
 	private void pressKey(int i) {
+		System.out.println( i + " => " + KeyEvent.getKeyText(i) );
 		robert.delay(40);
 		robert.keyPress(i);
 		robert.delay(40);
@@ -114,18 +115,19 @@ public class Robin {
 	 * @param str The string to be written
 	 */
 	public void write(String str) {
-		System.out.println("To write: " + str );
 		str.chars().forEach( c -> pressKey( (char) c) );
 	}
 	
 	public void pressKey(char c) {
-		int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);	
+		int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
 		if (keyCode == KeyEvent.VK_UNDEFINED)
 			throw new IllegalArgumentException("Could not find any code for the char '" + c + "'.");
 		else {
-			if(c >'A' && c < 'Z')
-				robert.keyPress(KeyEvent.SHIFT_DOWN_MASK);
-			pressKey(keyCode);
+			if(c >'A' && c < 'Z') {
+				pressShiftPlusKey(c);
+			} else {
+				pressKey(keyCode);
+			}
 		}
 	}
 	
@@ -135,4 +137,21 @@ public class Robin {
 		robert.keyRelease(KeyEvent.VK_META);
 	}
 	
+	public void pressShiftPlusKey(char c) {
+		robert.keyPress( KeyEvent.VK_SHIFT );
+		robin.pressKey(c);
+		robert.keyRelease(KeyEvent.VK_SHIFT);
+	}
+	
+	public void pressAltPlusKey(char c) {
+		robert.keyPress( KeyEvent.VK_ALT );
+		robin.pressKey(c);
+		robert.keyRelease(KeyEvent.VK_ALT);
+	}
+	
+	public void pressAltGrPlusKey(char c) {
+		robert.keyPress( KeyEvent.VK_ALT_GRAPH );
+		robin.pressKey(c);
+		robert.keyRelease(KeyEvent.VK_ALT_GRAPH );
+	}
 }

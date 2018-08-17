@@ -27,7 +27,7 @@ public class RunRobin {
 	private static void writeNote(Robin robban) {
 		robban.moveMouseTo(600, 1000);
 		robban.leftClick();
-		robban.write("Testar att skriva lite\noch sen lite till\n");
+		robban.write("+´\npå¨\nlöä'\nm,.-\n");
 	}
 	
 	public static void main(String[] args) {
