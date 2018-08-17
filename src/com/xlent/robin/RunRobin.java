@@ -18,11 +18,9 @@ public class RunRobin {
 	}
 	
 	private static void openNewTab(Robin robban) {
-		// command + t öpnar ny tab
-		robban.moveMouseTo(1610, 60);
-		//robban.moveMouseTo(1000, 60);
+		robban.moveMouseTo(1000, 60);
 		robban.leftClick();
-		//robban.pressCommandPlusKey('n');
+		robban.pressCommandPlusKey('t');
 		robban.write("smp.se\n");
 	}
 	

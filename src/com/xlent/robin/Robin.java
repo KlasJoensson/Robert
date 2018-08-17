@@ -101,9 +101,11 @@ public class Robin {
 	 * @param i An integer that corresponds to the wanted key
 	 */
 	private void pressKey(int i) {
-		System.out.print( KeyEvent.getKeyText(i) );
 		robert.delay(40);
 		robert.keyPress(i);
+		robert.delay(40);
+		robert.keyRelease(i);
+		robert.delay(40);
 	}
 	
 	/**
@@ -112,12 +114,12 @@ public class Robin {
 	 * @param str The string to be written
 	 */
 	public void write(String str) {
+		System.out.println("To write: " + str );
 		str.chars().forEach( c -> pressKey( (char) c) );
 	}
 	
 	public void pressKey(char c) {
-		
-		int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+		int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);	
 		if (keyCode == KeyEvent.VK_UNDEFINED)
 			throw new IllegalArgumentException("Could not find any code for the char '" + c + "'.");
 		else {
@@ -128,12 +130,9 @@ public class Robin {
 	}
 	
 	public void pressCommandPlusKey(char c) {
-		// TODO How to simulate the command-key?
-		robert.delay(40);
-		robert.keyPress( KeyEvent.META_DOWN_MASK );
-		robert.delay(40);
-		robert.keyPress(c);
-		//robert.keyRelease( Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() );
+		robert.keyPress( KeyEvent.VK_META );
+		robin.pressKey(c);
+		robert.keyRelease(KeyEvent.VK_META);
 	}
 	
 }
