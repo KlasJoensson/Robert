@@ -101,7 +101,7 @@ public class Robin {
 	 * @param i An integer that corresponds to the wanted key
 	 */
 	private void pressKey(int i) {
-		System.out.println( i + " => " + KeyEvent.getKeyText(i) );
+		//System.out.println( i + " => " + KeyEvent.getKeyText(i) );
 		robert.delay(40);
 		robert.keyPress(i);
 		robert.delay(40);
@@ -120,38 +120,190 @@ public class Robin {
 	
 	public void pressKey(char c) {
 		int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
-		if (keyCode == KeyEvent.VK_UNDEFINED)
+		System.out.println( c + " => " + keyCode );
+		/*if (keyCode == KeyEvent.VK_UNDEFINED)
 			throw new IllegalArgumentException("Could not find any code for the char '" + c + "'.");
-		else {
-			if(c >'A' && c < 'Z') {
-				pressShiftPlusKey(c);
-			} else {
+		else {*/
+			if(c >= 'A' && c <= 'Z') {
+				pressShiftPlusKey(keyCode);
+			} else if(c >='a' && c <= 'z' || c == ' ' || c > 43 && c < 58) { 
+				//char nr 44 to 57 in the ASCII table gives the same char
+				pressKey(keyCode);
+			} else {//if(c > 32 && c < 48 ) {
+				//writeSpecialCharters(c);
+			//} else {
 				pressKey(keyCode);
 			}
+		//}
+	}
+	
+	// Special lösning för *;:@\ fungerar inte  
+	// For some reason \ gives ', ' gives ä, ; gives ö and [ gives å on my computer. 
+	private void writeSpecialCharters(char c) {
+		switch (c) {
+		case 'å':
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('[') );
+			break;
+		case 'ä':
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('\'') );
+			break;
+		case 'ö':
+			pressKey( KeyEvent.getExtendedKeyCodeForChar(';') );
+			break;
+		case 'Å':
+			pressShiftPlusKey('[');
+			break;
+		case 'Ä':
+			pressShiftPlusKey('\'');
+			break;
+		case 'Ö':
+			pressShiftPlusKey(';');
+			break;
+		case '!':
+			pressShiftPlusKey(KeyEvent.VK_1);
+			break;
+		case '"':
+			pressShiftPlusKey(KeyEvent.VK_2);
+			break;
+		case '#':
+			pressShiftPlusKey(KeyEvent.VK_3);
+			break;
+		case '€':
+			pressShiftPlusKey(KeyEvent.VK_4);
+			break;
+		case '$':
+			pressAltGrPlusKey(KeyEvent.VK_4);
+			break;
+		case '%':
+			pressShiftPlusKey(KeyEvent.VK_5);
+			break;
+		case '&':
+			pressShiftPlusKey(KeyEvent.VK_6);
+			break;
+		case '(':
+			pressShiftPlusKey(KeyEvent.VK_8);
+			break;
+		case ')':
+			pressShiftPlusKey(KeyEvent.VK_9);
+			break;
+		case '=':
+			pressShiftPlusKey(KeyEvent.VK_0);
+			break;
+		case '\'':
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('\\') );
+			break;
+		case '\\':
+			pressShiftAltGrPlusKey(KeyEvent.VK_7);
+			break;
+		case '*':
+			pressKey(KeyEvent.VK_ASTERISK);
+			break;
+		case '+':
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('-') );
+			break;
+		case ';':
+			pressKey(KeyEvent.VK_SEMICOLON);
+			break;
+		case ':':
+			pressKey(KeyEvent.VK_COLON);
+			break;
+		case '<':
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('`') );
+			break;
+		case '>':
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('`') );
+			break;
+		case '?':
+			pressShiftPlusKey('-');
+			break;
+		case '@':
+			pressKey(KeyEvent.VK_AT);
+			break;
+		default:
+			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+			//throw new IllegalArgumentException("Could not find any code for the char '" + c + "'.");
 		}
 	}
 	
+	/**
+	 * Simulates pressing Meta or Command key before pressing the key for the char, 
+	 * e.g. with the argument 'a' it would be like pressing Meta + a on the keyboard.
+	 * 
+	 * @param char The char to be combined with the Meta key
+	 */
 	public void pressCommandPlusKey(char c) {
 		robert.keyPress( KeyEvent.VK_META );
 		robin.pressKey(c);
 		robert.keyRelease(KeyEvent.VK_META);
 	}
 	
+	/**
+	 * Simulates pressing Shift before pressing the key for the char, 
+	 * e.g. with the argument 'a' it would be like pressing shift + a on the keyboard.
+	 * 
+	 * @param char The char to shift
+	 */
 	public void pressShiftPlusKey(char c) {
+		pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+	}
+	
+	/**
+	 * Simulates pressing Shift before pressing the key with the key code.
+	 * 
+	 * @param keyCode the Java.KeyEvent code for the key 
+	 */
+	private void pressShiftPlusKey(int keyCode) {
 		robert.keyPress( KeyEvent.VK_SHIFT );
-		robin.pressKey(c);
-		robert.keyRelease(KeyEvent.VK_SHIFT);
+		robin.pressKey(keyCode);
+		robert.keyRelease( KeyEvent.VK_SHIFT );
 	}
 	
+	/**
+	 * Simulates pressing Alt key before pressing the key for the char, 
+	 * e.g. with the argument 'a' it would be like pressing Alt + a on the keyboard.
+	 * 
+	 * @param char The char to be combined with the Alt key
+	 */
 	public void pressAltPlusKey(char c) {
-		robert.keyPress( KeyEvent.VK_ALT );
-		robin.pressKey(c);
-		robert.keyRelease(KeyEvent.VK_ALT);
+		pressAltPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
 	}
 	
+	private void pressAltPlusKey(int keyCode) {
+		robert.keyPress( KeyEvent.VK_ALT );
+		robin.pressKey(keyCode);
+		robert.keyRelease( KeyEvent.VK_ALT);
+	}
+	
+	/**
+	 * Simulates pressing Alt Graph key before pressing the key for the char, 
+	 * e.g. with the argument 'a' it would be like pressing AltGr + a on the keyboard.
+	 * 
+	 * @param char The char to be combined with the Alt Graph key
+	 */
 	public void pressAltGrPlusKey(char c) {
+		pressAltGrPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+	}
+	
+	private void pressAltGrPlusKey(int keyCode) {
+		System.out.println("AltGr");
 		robert.keyPress( KeyEvent.VK_ALT_GRAPH );
-		robin.pressKey(c);
-		robert.keyRelease(KeyEvent.VK_ALT_GRAPH );
+		robin.pressKey(keyCode);
+		robert.keyRelease( KeyEvent.VK_ALT_GRAPH );
+	}
+	
+	/**
+	 * Simulates pressing both shift and Alt Graph key before pressing the key for the char, 
+	 * e.g. with the argument 'a' it would be like pressing Shift + AltGr + a on the keyboard.
+	 * 
+	 * @param char The char to be combined with the shift and Alt Graph key
+	 */
+	public void pressShiftAltGrPlusKey(char c) {
+		pressAltGrPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+	}
+	
+	private void pressShiftAltGrPlusKey(int keyCode) {
+		robert.keyPress( KeyEvent.VK_SHIFT );
+		pressAltGrPlusKey(keyCode);
+		robert.keyRelease( KeyEvent.VK_SHIFT );
 	}
 }
