@@ -126,8 +126,8 @@ public class Robin {
 		else {*/
 			if(c >= 'A' && c <= 'Z') {
 				pressShiftPlusKey(keyCode);
-			} else if(c >='a' && c <= 'z' || c == ' ' || c > 43 && c < 58) { 
-				//char nr 44 to 57 in the ASCII table gives the same char
+			} else if(c >='a' && c <= 'z' || c == ' ' || c == '.' || c == ','|| c > 47 && c < 58) { 
+				//char nr 48 to 57 in the ASCII table gives the same char, i.e. 0-9
 				pressKey(keyCode);
 			} else {//if(c > 32 && c < 48 ) {
 				writeSpecialCharters(c);
@@ -137,7 +137,7 @@ public class Robin {
 		//}
 	}
 	
-	// Special lösning för *;:@\ fungerar inte  
+	// Special lösning för @\ fungerar inte  
 	// For some reason \ gives ', ' gives ä, ; gives ö and [ gives å on my computer. 
 	private void writeSpecialCharters(char c) {
 		switch (c) {
@@ -172,7 +172,7 @@ public class Robin {
 			pressShiftPlusKey(KeyEvent.VK_4);
 			break;
 		case '$':
-			pressAltGrPlusKey(KeyEvent.VK_4);
+			pressAltPlusKey(KeyEvent.VK_4);
 			break;
 		case '%':
 			pressShiftPlusKey(KeyEvent.VK_5);
@@ -193,10 +193,10 @@ public class Robin {
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('\\') );
 			break;
 		case '\\':
-			pressShiftAltGrPlusKey(KeyEvent.VK_7);
+			pressKey( KeyEvent.getExtendedKeyCodeForChar(' ') );
 			break;
 		case '*':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('\\') );
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('ö') );
 			break;
 		case '+':
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('-') );
@@ -217,8 +217,21 @@ public class Robin {
 			pressShiftPlusKey('-');
 			break;
 		case '@':
-			pressAltGrPlusKey(KeyEvent.VK_2);
-			//pressKey( KeyEvent.getExtendedKeyCodeForChar('@') );
+			pressAltPlusKey('2');
+			break;
+		case '/':
+			pressShiftPlusKey(KeyEvent.VK_7);
+			break;
+		case '|':
+			pressAltPlusKey( '7' );
+			break;
+		case '±':
+			pressAltPlusKey( '-' );
+			break;
+		case '-':
+			System.out.println("Found char -");
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('å') );
+			//pressKey( 43 );
 			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
@@ -279,17 +292,16 @@ public class Robin {
 	 * Simulates pressing Alt Graph key before pressing the key for the char, 
 	 * e.g. with the argument 'a' it would be like pressing AltGr + a on the keyboard.
 	 * 
+	 * Note: Alt Graph don't exists on macbook pro, only Alt (with the same result...)
+	 * 
 	 * @param char The char to be combined with the Alt Graph key
 	 */
 	public void pressAltGrPlusKey(char c) {
-		pressAltGrPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+		pressAltPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
 	}
 	
 	private void pressAltGrPlusKey(int keyCode) {
-		System.out.println("AltGr");
-		robert.keyPress( KeyEvent.VK_ALT_GRAPH );
-		robin.pressKey(keyCode);
-		robert.keyRelease( KeyEvent.VK_ALT_GRAPH );
+		pressAltPlusKey(keyCode);
 	}
 	
 	/**

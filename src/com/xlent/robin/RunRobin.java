@@ -27,7 +27,8 @@ public class RunRobin {
 	private static void writeNote(Robin robban) {
 		robban.moveMouseTo(600, 1000);
 		robban.leftClick(); 
-		robban.write("Testar * 1 ; 2 : 3 @ 4 \\ 5");
+		robban.write("| * @ + ? - ... _");
+		//robban.write("Testar @ 1 \\ 2 | 3 /");
 		//robban.write("Testar 1 / 2 [ 3 \\ 4 ]5 ^ 6 _ 7 `"); // 1 - 2 å 3 ' 4 ¨5  6  7 <
 	}
 	
