@@ -130,9 +130,9 @@ public class Robin {
 				//char nr 44 to 57 in the ASCII table gives the same char
 				pressKey(keyCode);
 			} else {//if(c > 32 && c < 48 ) {
-				//writeSpecialCharters(c);
+				writeSpecialCharters(c);
 			//} else {
-				pressKey(keyCode);
+				//pressKey(keyCode);
 			}
 		//}
 	}
@@ -196,16 +196,16 @@ public class Robin {
 			pressShiftAltGrPlusKey(KeyEvent.VK_7);
 			break;
 		case '*':
-			pressKey(KeyEvent.VK_ASTERISK);
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('\\') );
 			break;
 		case '+':
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('-') );
 			break;
 		case ';':
-			pressKey(KeyEvent.VK_SEMICOLON);
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar(',') );
 			break;
 		case ':':
-			pressKey(KeyEvent.VK_COLON);
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('.') );
 			break;
 		case '<':
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('`') );
@@ -217,7 +217,8 @@ public class Robin {
 			pressShiftPlusKey('-');
 			break;
 		case '@':
-			pressKey(KeyEvent.VK_AT);
+			pressAltGrPlusKey(KeyEvent.VK_2);
+			//pressKey( KeyEvent.getExtendedKeyCodeForChar('@') );
 			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
