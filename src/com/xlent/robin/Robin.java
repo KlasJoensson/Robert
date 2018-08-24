@@ -129,6 +129,15 @@ public class Robin {
 			} else if(c >='a' && c <= 'z' || c == ' ' || c == '.' || c == ','|| c > 47 && c < 58) { 
 				//char nr 48 to 57 in the ASCII table gives the same char, i.e. 0-9
 				pressKey(keyCode);
+			} else if(c > 32 && c < 48) { 
+				// Except for . and , which are handle above
+				writeAscii33to47(c);
+			} else if(c > 57 && c < 65) { 
+				writeAscii58to64(c);
+			} else if(c > 90 && c < 97) { 
+				writeAscii91to96(c);
+			} else if(c > 122 && c < 127) { 
+				writeAscii123to126(c);
 			} else {//if(c > 32 && c < 48 ) {
 				writeSpecialCharters(c);
 			//} else {
@@ -137,8 +146,170 @@ public class Robin {
 		//}
 	}
 	
-	// Special lösning för @\ fungerar inte  
-	// For some reason \ gives ', ' gives ä, ; gives ö and [ gives å on my computer. 
+	/**
+	 * Handles the chars in with ASCII nr. 33 to 47. Except comma and period, since they are handled elsewhere.
+	 * Don't work: ' -
+	 * 
+	 * @param c
+	 */
+	private void writeAscii33to47(char c) {
+		System.out.println("In writeAscii33to47");
+		switch (c) {
+		case '!':
+			pressShiftPlusKey(KeyEvent.VK_1);
+			break;
+		case '"':
+			pressShiftPlusKey(KeyEvent.VK_2);
+			break;
+		case '#':
+			pressShiftPlusKey(KeyEvent.VK_3);
+			break;		
+		case '$':
+			pressAltPlusKey(KeyEvent.VK_4);
+			break;
+		case '%':
+			pressShiftPlusKey(KeyEvent.VK_5);
+			break;
+		case '&':
+			pressShiftPlusKey(KeyEvent.VK_6);
+			break;
+		case '\'':
+			System.out.println("Found char '");
+			pressKey(KeyEvent.VK_QUOTE);
+			break;
+		case '(':
+			pressShiftPlusKey(KeyEvent.VK_8);
+			break;
+		case ')':
+			pressShiftPlusKey(KeyEvent.VK_9);
+			break;
+		case '*':
+			pressKey(KeyEvent.VK_MULTIPLY);
+			break;
+		case '+':
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('-') );
+			break;
+		case '-':
+			System.out.println("Found char -");
+			pressKey( KeyEvent.VK_MINUS );
+			break;
+		case '/':
+			pressShiftPlusKey(KeyEvent.VK_7);
+			break;
+		default:
+			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+		}
+	}
+	
+	/**
+	 * Handles the chars in with ASCII nr. 58 to 64. Except comma and period, since they are handled elsewhere.
+	 * 
+	 * @param c
+	 */
+	private void writeAscii58to64(char c) {
+		switch (c) {
+		case ';':
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar(',') );
+			break;
+		case ':':
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('.') );
+			break;
+		case '<':
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('`') );
+			break;
+		case '=':
+			pressShiftPlusKey(KeyEvent.VK_0);
+			break;
+		case '>':
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('`') );
+			break;
+		case '?':
+			pressShiftPlusKey('-');
+			break;	
+		case '@':
+			pressAltPlusKey('2');
+			break;
+		default:
+			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+		}
+	}
+	
+	/**
+	 * Handles the chars in with ASCII nr. 91 to 96. Except comma and period, since they are handled elsewhere.
+	 * This chars don't work: ^ _ `
+	 * 
+	 * @param c
+	 */
+	private void writeAscii91to96(char c) {
+		System.out.println("In writeAscii91to69");
+		switch (c) {
+		case '[':
+			pressAltPlusKey(KeyEvent.VK_8);
+			break;
+		case '\\':
+			robert.keyPress( KeyEvent.VK_ALT );
+			pressShiftPlusKey(KeyEvent.VK_7);
+			robert.keyRelease( KeyEvent.VK_ALT);
+			break;
+		case ']':
+			pressAltPlusKey(KeyEvent.VK_9);
+			break;
+		case '^':
+			System.out.println("Found char ^");
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('^') );
+			pressKey(' ');
+			break;
+		case '_':
+			System.out.println("Found char _");
+			pressKey(KeyEvent.VK_UNDERSCORE);
+			break;
+		case '`':
+			System.out.println("Found char `");
+			pressShiftPlusKey(KeyEvent.getExtendedKeyCodeForChar('´'));
+			break;
+		default:
+			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+		}
+	}
+	
+	/**
+	 * Handles the chars in with ASCII nr. 123 to 126. Except comma and period, since they are handled elsewhere.
+	 * This char don't work: ~
+	 * @param c
+	 */
+	private void writeAscii123to126(char c) {
+		System.out.println("In writeAscii91to69");
+		switch (c) {
+		case '{':
+			robert.keyPress( KeyEvent.VK_ALT );
+			pressShiftPlusKey(KeyEvent.VK_8);
+			robert.keyRelease( KeyEvent.VK_ALT);
+			break;
+		case '|':
+			pressAltPlusKey(KeyEvent.VK_7);
+			break;
+		case '}':
+			robert.keyPress( KeyEvent.VK_ALT );
+			pressShiftPlusKey(KeyEvent.VK_9);
+			robert.keyRelease( KeyEvent.VK_ALT);
+			break;
+		case '~':
+			System.out.println("Found char ~");
+			robert.keyPress( KeyEvent.VK_ALT );
+			pressKey( '¨');
+			robert.keyRelease( KeyEvent.VK_ALT);
+			pressKey(KeyEvent.VK_SEPARATER);
+			break;
+		default:
+			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
+		}
+	}
+	
+	/**
+	 * Some of chars from the extended ASCII table (i.e. 128 to 255).
+	 * 
+	 * @param c
+	 */
 	private void writeSpecialCharters(char c) {
 		switch (c) {
 		case 'å':
@@ -159,80 +330,19 @@ public class Robin {
 		case 'Ö':
 			pressShiftPlusKey(';');
 			break;
-		case '!':
-			pressShiftPlusKey(KeyEvent.VK_1);
-			break;
-		case '"':
-			pressShiftPlusKey(KeyEvent.VK_2);
-			break;
-		case '#':
-			pressShiftPlusKey(KeyEvent.VK_3);
-			break;
 		case '€':
 			pressShiftPlusKey(KeyEvent.VK_4);
-			break;
-		case '$':
-			pressAltPlusKey(KeyEvent.VK_4);
-			break;
-		case '%':
-			pressShiftPlusKey(KeyEvent.VK_5);
-			break;
-		case '&':
-			pressShiftPlusKey(KeyEvent.VK_6);
-			break;
-		case '(':
-			pressShiftPlusKey(KeyEvent.VK_8);
-			break;
-		case ')':
-			pressShiftPlusKey(KeyEvent.VK_9);
-			break;
-		case '=':
-			pressShiftPlusKey(KeyEvent.VK_0);
-			break;
+			break;		
 		case '\'':
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('\\') );
 			break;
-		case '\\':
-			pressKey( KeyEvent.getExtendedKeyCodeForChar(' ') );
-			break;
-		case '*':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('ö') );
-			break;
-		case '+':
-			pressKey( KeyEvent.getExtendedKeyCodeForChar('-') );
-			break;
-		case ';':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar(',') );
-			break;
-		case ':':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('.') );
-			break;
-		case '<':
-			pressKey( KeyEvent.getExtendedKeyCodeForChar('`') );
-			break;
-		case '>':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('`') );
-			break;
-		case '?':
-			pressShiftPlusKey('-');
-			break;
-		case '@':
-			pressAltPlusKey('2');
-			break;
-		case '/':
-			pressShiftPlusKey(KeyEvent.VK_7);
-			break;
-		case '|':
-			pressAltPlusKey( '7' );
+		case '©':
+			pressAltPlusKey( '1' );
 			break;
 		case '±':
 			pressAltPlusKey( '-' );
 			break;
-		case '-':
-			System.out.println("Found char -");
-			pressKey( KeyEvent.getExtendedKeyCodeForChar('å') );
-			//pressKey( 43 );
-			break;
+		
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
 			//throw new IllegalArgumentException("Could not find any code for the char '" + c + "'.");
