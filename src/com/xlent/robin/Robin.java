@@ -4,11 +4,9 @@ import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-
-import org.omg.CosNaming.NamingContextPackage.NotFound;
+import java.util.Arrays;
 
 /**
  * This is a wrapper class to make the use of java.awt.Robot easier.
@@ -18,6 +16,12 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
  */
 public class Robin {
 	
+	/**
+	 * Enumeration for the different modifier keys. E.g. Shift, alt or command key
+	 * 
+	 * @author Klas Jönsson
+	 *
+	 */
 	public enum ModifierKey {
 		SHIFT,
 		ALT,
@@ -132,10 +136,39 @@ public class Robin {
 		str.chars().forEach( c -> pressKey( (char) c) );
 	}
 	
+	/**
+	 * Press a key and a modifier key, e.g. Shift + k for K
+	 * 
+	 * @param i An integer representing the key to be pressed
+	 * @param mk The modifier key
+	 */
+	public void pressKey(int i, ModifierKey mk) {
+		pressModefierKey(mk);
+		pressKey( i );
+		releaseModefierKey(mk);
+	}
+	
+	/**
+	 * Press a key and a modifier key, e.g. Shift + Alt + 9 for }
+	 * 
+	 * @param i An integer representing the key to be pressed
+	 * @param mk An array with the modifier keys
+	 */
+	public void pressKey(int i, ModifierKey[] mk) {
+		Arrays.stream(mk).forEach( key -> pressModefierKey(key) );
+		pressKey( i );
+		Arrays.stream(mk).forEach( key -> releaseModefierKey(key) );
+	}
+	
+	/**
+	 * Press a key (or key combination) representing the char.
+	 * 
+	 * @param c The char hows key to be pressed
+	 */
 	public void pressKey(char c) {
 		int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
 			if(c >= 'A' && c <= 'Z') {
-				pressShiftPlusKey(keyCode);
+				pressKey(keyCode, ModifierKey.SHIFT);
 			} else if(c >='a' && c <= 'z' || c == ' ' || c == '.' || c == ','|| c > 47 && c < 58) { 
 				//char nr 48 to 57 in the ASCII table gives the same char, i.e. 0-9
 				pressKey(keyCode);
@@ -161,31 +194,31 @@ public class Robin {
 	private void writeAscii33to47(char c) {
 		switch (c) {
 		case '!':
-			pressShiftPlusKey(KeyEvent.VK_1);
+			pressKey(KeyEvent.VK_1, ModifierKey.SHIFT);
 			break;
 		case '"':
-			pressShiftPlusKey(KeyEvent.VK_2);
+			pressKey(KeyEvent.VK_2, ModifierKey.SHIFT);
 			break;
 		case '#':
-			pressShiftPlusKey(KeyEvent.VK_3);
+			pressKey(KeyEvent.VK_3, ModifierKey.SHIFT);
 			break;		
 		case '$':
-			pressAltPlusKey(KeyEvent.VK_4);
+			pressKey(KeyEvent.VK_4, ModifierKey.ALT);
 			break;
 		case '%':
-			pressShiftPlusKey(KeyEvent.VK_5);
+			pressKey(KeyEvent.VK_5, ModifierKey.SHIFT);
 			break;
 		case '&':
-			pressShiftPlusKey(KeyEvent.VK_6);
+			pressKey(KeyEvent.VK_6, ModifierKey.SHIFT);
 			break;
 		case '\'':
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('\\') );
 			break;
 		case '(':
-			pressShiftPlusKey(KeyEvent.VK_8);
+			pressKey(KeyEvent.VK_8, ModifierKey.SHIFT);
 			break;
 		case ')':
-			pressShiftPlusKey(KeyEvent.VK_9);
+			pressKey(KeyEvent.VK_9, ModifierKey.SHIFT);
 			break;
 		case '*':
 			pressKey(KeyEvent.VK_MULTIPLY);
@@ -194,11 +227,10 @@ public class Robin {
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('-') );
 			break;
 		case '-':
-			System.out.println("Found char -");
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('/') );
 			break;
 		case '/':
-			pressShiftPlusKey(KeyEvent.VK_7);
+			pressKey(KeyEvent.VK_7, ModifierKey.SHIFT);
 			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
@@ -213,25 +245,25 @@ public class Robin {
 	private void writeAscii58to64(char c) {
 		switch (c) {
 		case ';':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar(',') );
+			pressKey( KeyEvent.getExtendedKeyCodeForChar(','), ModifierKey.SHIFT );
 			break;
 		case ':':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('.') );
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('.'), ModifierKey.SHIFT );
 			break;
 		case '<':
 			pressKey( KeyEvent.getExtendedKeyCodeForChar('`') );
 			break;
 		case '=':
-			pressShiftPlusKey(KeyEvent.VK_0);
+			pressKey(KeyEvent.VK_0, ModifierKey.SHIFT);
 			break;
 		case '>':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('`') );
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('`'), ModifierKey.SHIFT );
 			break;
 		case '?':
-			pressShiftPlusKey('-');
+			pressKey('-', ModifierKey.SHIFT);
 			break;	
 		case '@':
-			pressAltPlusKey('2');
+			pressKey('2', ModifierKey.ALT);
 			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
@@ -247,27 +279,25 @@ public class Robin {
 	private void writeAscii91to96(char c) {
 		switch (c) {
 		case '[':
-			pressAltPlusKey(KeyEvent.VK_8);
+			pressKey(KeyEvent.VK_8, ModifierKey.ALT);
 			break;
 		case '\\':
-			robert.keyPress( KeyEvent.VK_ALT );
-			pressShiftPlusKey(KeyEvent.VK_7);
-			robert.keyRelease( KeyEvent.VK_ALT);
+			ModifierKey[] modifiers = {ModifierKey.ALT, ModifierKey.SHIFT};
+			pressKey(KeyEvent.VK_7, modifiers);
 			break;
 		case ']':
-			pressAltPlusKey(KeyEvent.VK_9);
+			pressKey(KeyEvent.VK_9, ModifierKey.ALT);
 			break;
 		case '^':
 			System.out.println("Found char ^");
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('^') );
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('^') );
 			pressKey(' ');
 			break;
 		case '_':
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('/') );
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('/'), ModifierKey.SHIFT );
 			break;
 		case '`':
-			System.out.println("Found char `");
-			pressShiftPlusKey(KeyEvent.getExtendedKeyCodeForChar('<'));
+			pressKey(KeyEvent.getExtendedKeyCodeForChar('<'), ModifierKey.SHIFT );
 			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
@@ -283,21 +313,19 @@ public class Robin {
 	private void writeAscii123to126(char c) {
 		switch (c) {
 		case '{':
-			robert.keyPress( KeyEvent.VK_ALT );
-			pressShiftPlusKey(KeyEvent.VK_8);
-			robert.keyRelease( KeyEvent.VK_ALT);
+			ModifierKey[] modifiers0 = {ModifierKey.ALT, ModifierKey.SHIFT};
+			pressKey(KeyEvent.VK_8, modifiers0);
 			break;
 		case '|':
-			pressAltPlusKey(KeyEvent.VK_7);
+			pressKey(KeyEvent.VK_7, ModifierKey.ALT);
 			break;
 		case '}':
-			robert.keyPress( KeyEvent.VK_ALT );
-			pressShiftPlusKey(KeyEvent.VK_9);
-			robert.keyRelease( KeyEvent.VK_ALT);
+			ModifierKey[] modifiers1 = {ModifierKey.ALT, ModifierKey.SHIFT};
+			pressKey(KeyEvent.VK_9, modifiers1);
 			break;
 		case '~':
 			System.out.println("Found char ~");
-			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('<') );
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('<') );
 			/*robert.keyPress( KeyEvent.VK_ALT );
 			pressKey( '¨');
 			robert.keyRelease( KeyEvent.VK_ALT);
@@ -326,28 +354,28 @@ public class Robin {
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(';') );
 			break;
 		case 'Å':
-			pressShiftPlusKey('[');
+			pressKey('[', ModifierKey.SHIFT);
 			break;
 		case 'Ä':
-			pressShiftPlusKey('\'');
+			pressKey('\'', ModifierKey.SHIFT);
 			break;
 		case 'Ö':
-			pressShiftPlusKey(';');
+			pressKey(';', ModifierKey.SHIFT);
 			break;
 		case '€':
-			pressShiftPlusKey(KeyEvent.VK_4);
+			pressKey(KeyEvent.VK_4, ModifierKey.SHIFT);
 			break;		
 		case '©':
-			pressAltPlusKey( '1' );
+			pressKey( '1', ModifierKey.ALT);
 			break;
 		case '±':
-			pressAltPlusKey( '-' );
+			pressKey( '-', ModifierKey.ALT );
 			break;
 		case '≈':
-			pressAltPlusKey( '0' );
+			pressKey( '0', ModifierKey.ALT );
 			break;
 		case '§':
-			pressAltPlusKey( '6' );
+			pressKey( '6', ModifierKey.ALT );
 			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
@@ -355,90 +383,20 @@ public class Robin {
 	}
 	
 	/**
-	 * Simulates pressing Meta or Command key before pressing the key for the char, 
-	 * e.g. with the argument 'a' it would be like pressing Meta + a on the keyboard.
+	 * Press the arrow up key one or more times.
 	 * 
-	 * @param char The char to be combined with the Meta key
+	 * @param times The number of times to press the key
 	 */
-	public void pressCommandPlusKey(char c) {
-		robert.keyPress( KeyEvent.VK_META );
-		robin.pressKey(c);
-		robert.keyRelease(KeyEvent.VK_META);
-	}
-	
-	/**
-	 * Simulates pressing Shift before pressing the key for the char, 
-	 * e.g. with the argument 'a' it would be like pressing shift + a on the keyboard.
-	 * 
-	 * @param char The char to shift
-	 */
-	public void pressShiftPlusKey(char c) {
-		pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
-	}
-	
-	/**
-	 * Simulates pressing Shift before pressing the key with the key code.
-	 * 
-	 * @param keyCode the Java.KeyEvent code for the key 
-	 */
-	private void pressShiftPlusKey(int keyCode) {
-		robert.keyPress( KeyEvent.VK_SHIFT );
-		robin.pressKey(keyCode);
-		robert.keyRelease( KeyEvent.VK_SHIFT );
-	}
-	
-	/**
-	 * Simulates pressing Alt key before pressing the key for the char, 
-	 * e.g. with the argument 'a' it would be like pressing Alt + a on the keyboard.
-	 * 
-	 * @param char The char to be combined with the Alt key
-	 */
-	public void pressAltPlusKey(char c) {
-		pressAltPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
-	}
-	
-	private void pressAltPlusKey(int keyCode) {
-		robert.keyPress( KeyEvent.VK_ALT );
-		robin.pressKey(keyCode);
-		robert.keyRelease( KeyEvent.VK_ALT);
-	}
-	
-	/**
-	 * Simulates pressing Alt Graph key before pressing the key for the char, 
-	 * e.g. with the argument 'a' it would be like pressing AltGr + a on the keyboard.
-	 * 
-	 * Note: Alt Graph don't exists on macbook pro, only Alt (with the same result...)
-	 * 
-	 * @param char The char to be combined with the Alt Graph key
-	 */
-	public void pressAltGrPlusKey(char c) {
-		pressAltPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
-	}
-	
-	private void pressAltGrPlusKey(int keyCode) {
-		pressAltPlusKey(keyCode);
-	}
-	
-	/**
-	 * Simulates pressing both shift and Alt Graph key before pressing the key for the char, 
-	 * e.g. with the argument 'a' it would be like pressing Shift + AltGr + a on the keyboard.
-	 * 
-	 * @param char The char to be combined with the shift and Alt Graph key
-	 */
-	public void pressShiftAltGrPlusKey(char c) {
-		pressAltGrPlusKey( KeyEvent.getExtendedKeyCodeForChar(c) );
-	}
-	
-	private void pressShiftAltGrPlusKey(int keyCode) {
-		robert.keyPress( KeyEvent.VK_SHIFT );
-		pressAltGrPlusKey(keyCode);
-		robert.keyRelease( KeyEvent.VK_SHIFT );
-	}
-	
 	public void pressArrowUp(int times) {
 		pressArrowUp(times, ModifierKey.NON ); 
 	}
 	
+	/**
+	 * Press the arrow up key one or more times with a modifier key, e.g. Shift.
+	 * 
+	 * @param times The number of times to press the key
+	 * @param mk The modifier key to be used
+	 */
 	public void pressArrowUp(int times, ModifierKey mk) {
 		pressModefierKey(mk);
 		for (;times>0;times--) {
@@ -447,10 +405,21 @@ public class Robin {
 		releaseModefierKey(mk);
 	}
 	
+	/**
+	 * Press the arrow down key one or more times.
+	 * 
+	 * @param times The number of times to press the key
+	 */
 	public void pressArrowDown(int times) {
 		pressArrowDown(times, ModifierKey.NON);
 	}
 	
+	/**
+	 * Press the arrow down key one or more times with a modifier key, e.g. Shift.
+	 * 
+	 * @param times The number of times to press the key
+	 * @param mk The modifier key to be used
+	 */
 	public void pressArrowDown(int times, ModifierKey mk) {
 		pressModefierKey(mk);
 		for (;times>0;times--) {
@@ -459,10 +428,21 @@ public class Robin {
 		releaseModefierKey(mk);
 	}
 
+	/**
+	 * Press the arrow left key one or more times.
+	 * 
+	 * @param times The number of times to press the key
+	 */
 	public void pressArrowLeft(int times) {
 		pressArrowLeft(times, ModifierKey.NON);
 	}
 	
+	/**
+	 * Press the arrow left key one or more times with a modifier key, e.g. Shift.
+	 * 
+	 * @param times The number of times to press the key
+	 * @param mk The modifier key to be used
+	 */
 	public void pressArrowLeft(int times, ModifierKey mk) {
 		pressModefierKey(mk);
 		for (;times>0;times--) {
@@ -471,10 +451,21 @@ public class Robin {
 		releaseModefierKey(mk);
 	}
 	
+	/**
+	 * Press the arrow right key one or more times.
+	 * 
+	 * @param times The number of times to press the key
+	 */
 	public void pressArrowRight(int times) {
 		pressArrowRight(times, ModifierKey.NON);
 	}
 	
+	/**
+	 * Press the arrow right key one or more times with a modifier key, e.g. Shift.
+	 * 
+	 * @param times The number of times to press the key
+	 * @param mk The modifier key to be used
+	 */
 	public void pressArrowRight(int times, ModifierKey mk) {
 		pressModefierKey(mk);
 		for (;times>0;times--) {
@@ -483,6 +474,11 @@ public class Robin {
 		releaseModefierKey(mk);
 	}
 	
+	/**
+	 * Press a modifier key.
+	 * 
+	 * @param mk The modifier key to be pressed
+	 */
 	private void pressModefierKey(ModifierKey mk) {
 		switch (mk) {
 		case SHIFT:
@@ -503,6 +499,11 @@ public class Robin {
 		}
 	}
 	
+	/**
+	 * Release a modifier key.
+	 * 
+	 * @param mk The modifier key to be released
+	 */
 	private void releaseModefierKey(ModifierKey mk) {
 		switch (mk) {
 		case SHIFT:

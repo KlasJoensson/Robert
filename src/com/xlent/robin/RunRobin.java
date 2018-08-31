@@ -29,7 +29,7 @@ public class RunRobin {
 	private static void writeNote(Robin robban) {
 		robban.moveMouseTo(600, 1000);
 		robban.leftClick();
-		robban.write("2 ` 3 ~ 4");
+		robban.write("Klas Jönsson \\ ,. ;:{}[] ©");
 		//robban.write("1 ' 2 - 3 ^ 4 _ 5 ` 6 ~");//! \" # $ % & ' ( ) * + , - . /");
 		//robban.write("Testar @ 1 \\ 2 | 3 /");
 		//robban.write("Testar 1 / 2 [ 3 \\ 4 ]5 ^ 6 _ 7 `"); // 1 - 2 å 3 ' 4 ¨5  6  7 <
@@ -47,8 +47,8 @@ public class RunRobin {
 			Robin robban = Robin.getInstance();
 			//clickOnTab(robban);
 			//openNewTab(robban);
-			//writeNote(robban);
-			moveCursor(robban);
+			writeNote(robban);
+			//moveCursor(robban);
 			//System.out.println( KeyEvent.getKeyText(58) );
 			//System.out.println( KeyEvent.getExtendedKeyCodeForChar('t') );
 			//System.out.println( KeyEvent.getKeyText(KeyEvent.getExtendedKeyCodeForChar('t')) );
