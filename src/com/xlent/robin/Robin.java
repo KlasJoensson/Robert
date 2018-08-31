@@ -82,8 +82,10 @@ public class Robin {
 		moveMouseTo(location.x + x, location.y + y);
 	}
 	
-	/*
-	 * Types a string, at the moment it only handles [A-Z]
+	/**
+	 * Types a string in the active field, document etc. At the moment all printebly chars 
+	 * 
+	 * @param str The string to be written.
 	 */
 	public void type(String str) {
 		byte[] bytes = str.getBytes();
@@ -101,7 +103,6 @@ public class Robin {
 	 * @param i An integer that corresponds to the wanted key
 	 */
 	private void pressKey(int i) {
-		//System.out.println( i + " => " + KeyEvent.getKeyText(i) );
 		robert.delay(40);
 		robert.keyPress(i);
 		robert.delay(40);
@@ -110,7 +111,10 @@ public class Robin {
 	}
 	
 	/**
-	 * Writes a string in small caps.
+	 * Writes a string in small caps. The robot thinks the layout is similar to the (US) English International Layout,
+	 * but the chars written are matching the Swedish Layout.
+	 * The following three chars from the standard ASCII table don't work: ^ ` ~ 
+	 * And at the moment it's eleven chars from the extended ASCII table that do work: å ä ö Å Ä Ö € © ± ≈ §
 	 * 
 	 * @param str The string to be written
 	 */
@@ -120,10 +124,6 @@ public class Robin {
 	
 	public void pressKey(char c) {
 		int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
-		System.out.println( c + " => " + keyCode );
-		/*if (keyCode == KeyEvent.VK_UNDEFINED)
-			throw new IllegalArgumentException("Could not find any code for the char '" + c + "'.");
-		else {*/
 			if(c >= 'A' && c <= 'Z') {
 				pressShiftPlusKey(keyCode);
 			} else if(c >='a' && c <= 'z' || c == ' ' || c == '.' || c == ','|| c > 47 && c < 58) { 
@@ -138,22 +138,17 @@ public class Robin {
 				writeAscii91to96(c);
 			} else if(c > 122 && c < 127) { 
 				writeAscii123to126(c);
-			} else {//if(c > 32 && c < 48 ) {
+			} else {
 				writeSpecialCharters(c);
-			//} else {
-				//pressKey(keyCode);
 			}
-		//}
 	}
 	
 	/**
 	 * Handles the chars in with ASCII nr. 33 to 47. Except comma and period, since they are handled elsewhere.
-	 * Don't work: ' -
 	 * 
-	 * @param c
+	 * @param c The char to be written
 	 */
 	private void writeAscii33to47(char c) {
-		System.out.println("In writeAscii33to47");
 		switch (c) {
 		case '!':
 			pressShiftPlusKey(KeyEvent.VK_1);
@@ -174,8 +169,7 @@ public class Robin {
 			pressShiftPlusKey(KeyEvent.VK_6);
 			break;
 		case '\'':
-			System.out.println("Found char '");
-			pressKey(KeyEvent.VK_QUOTE);
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('\\') );
 			break;
 		case '(':
 			pressShiftPlusKey(KeyEvent.VK_8);
@@ -191,7 +185,7 @@ public class Robin {
 			break;
 		case '-':
 			System.out.println("Found char -");
-			pressKey( KeyEvent.VK_MINUS );
+			pressKey( KeyEvent.getExtendedKeyCodeForChar('/') );
 			break;
 		case '/':
 			pressShiftPlusKey(KeyEvent.VK_7);
@@ -204,7 +198,7 @@ public class Robin {
 	/**
 	 * Handles the chars in with ASCII nr. 58 to 64. Except comma and period, since they are handled elsewhere.
 	 * 
-	 * @param c
+	 * @param c The char to be written
 	 */
 	private void writeAscii58to64(char c) {
 		switch (c) {
@@ -236,12 +230,11 @@ public class Robin {
 	
 	/**
 	 * Handles the chars in with ASCII nr. 91 to 96. Except comma and period, since they are handled elsewhere.
-	 * This chars don't work: ^ _ `
+	 * This chars don't work: ^ `
 	 * 
-	 * @param c
+	 * @param c The char to be written
 	 */
 	private void writeAscii91to96(char c) {
-		System.out.println("In writeAscii91to69");
 		switch (c) {
 		case '[':
 			pressAltPlusKey(KeyEvent.VK_8);
@@ -260,12 +253,11 @@ public class Robin {
 			pressKey(' ');
 			break;
 		case '_':
-			System.out.println("Found char _");
-			pressKey(KeyEvent.VK_UNDERSCORE);
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('/') );
 			break;
 		case '`':
 			System.out.println("Found char `");
-			pressShiftPlusKey(KeyEvent.getExtendedKeyCodeForChar('´'));
+			pressShiftPlusKey(KeyEvent.getExtendedKeyCodeForChar('<'));
 			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
@@ -275,10 +267,10 @@ public class Robin {
 	/**
 	 * Handles the chars in with ASCII nr. 123 to 126. Except comma and period, since they are handled elsewhere.
 	 * This char don't work: ~
-	 * @param c
+	 * 
+	 * @param c The char to be written
 	 */
 	private void writeAscii123to126(char c) {
-		System.out.println("In writeAscii91to69");
 		switch (c) {
 		case '{':
 			robert.keyPress( KeyEvent.VK_ALT );
@@ -295,10 +287,11 @@ public class Robin {
 			break;
 		case '~':
 			System.out.println("Found char ~");
-			robert.keyPress( KeyEvent.VK_ALT );
+			pressShiftPlusKey( KeyEvent.getExtendedKeyCodeForChar('<') );
+			/*robert.keyPress( KeyEvent.VK_ALT );
 			pressKey( '¨');
 			robert.keyRelease( KeyEvent.VK_ALT);
-			pressKey(KeyEvent.VK_SEPARATER);
+			pressKey(KeyEvent.VK_SEPARATER);*/
 			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
@@ -306,9 +299,10 @@ public class Robin {
 	}
 	
 	/**
-	 * Some of chars from the extended ASCII table (i.e. 128 to 255).
+	 * Some of chars from the extended ASCII table (i.e. 128 to 255). At the moment it's 11 chars: 
+	 * å ä ö Å Ä Ö € © ± ≈ §
 	 * 
-	 * @param c
+	 * @param c The char to be written
 	 */
 	private void writeSpecialCharters(char c) {
 		switch (c) {
@@ -333,19 +327,20 @@ public class Robin {
 		case '€':
 			pressShiftPlusKey(KeyEvent.VK_4);
 			break;		
-		case '\'':
-			pressKey( KeyEvent.getExtendedKeyCodeForChar('\\') );
-			break;
 		case '©':
 			pressAltPlusKey( '1' );
 			break;
 		case '±':
 			pressAltPlusKey( '-' );
 			break;
-		
+		case '≈':
+			pressAltPlusKey( '0' );
+			break;
+		case '§':
+			pressAltPlusKey( '6' );
+			break;
 		default:
 			pressKey( KeyEvent.getExtendedKeyCodeForChar(c) );
-			//throw new IllegalArgumentException("Could not find any code for the char '" + c + "'.");
 		}
 	}
 	
