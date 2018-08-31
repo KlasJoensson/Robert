@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
 
+import com.xlent.robin.Robin.ModifierKey;
+
 /**
  * This class is for making use of the little robot Robin.
  * 
@@ -33,12 +35,20 @@ public class RunRobin {
 		//robban.write("Testar 1 / 2 [ 3 \\ 4 ]5 ^ 6 _ 7 `"); // 1 - 2 å 3 ' 4 ¨5  6  7 <
 	}
 	
+	private static void moveCursor(Robin robban) {
+		robban.moveMouseTo(600, 1000);
+		robban.leftClick();
+		robban.pressArrowDown(5);
+		robban.pressArrowRight(10, ModifierKey.SHIFT);
+	}
+	
 	public static void main(String[] args) {
 		try {
 			Robin robban = Robin.getInstance();
 			//clickOnTab(robban);
 			//openNewTab(robban);
-			writeNote(robban);
+			//writeNote(robban);
+			moveCursor(robban);
 			//System.out.println( KeyEvent.getKeyText(58) );
 			//System.out.println( KeyEvent.getExtendedKeyCodeForChar('t') );
 			//System.out.println( KeyEvent.getKeyText(KeyEvent.getExtendedKeyCodeForChar('t')) );

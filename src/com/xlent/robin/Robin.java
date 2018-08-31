@@ -18,6 +18,16 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
  */
 public class Robin {
 	
+	public enum ModifierKey {
+		SHIFT,
+		ALT,
+		ALT_GR,
+		COMMAND,
+		WINDOWS,
+		META,
+		NON
+	}
+	
 	static Robin robin;
 	static Robot robert;
 	
@@ -423,5 +433,93 @@ public class Robin {
 		robert.keyPress( KeyEvent.VK_SHIFT );
 		pressAltGrPlusKey(keyCode);
 		robert.keyRelease( KeyEvent.VK_SHIFT );
+	}
+	
+	public void pressArrowUp(int times) {
+		pressArrowUp(times, ModifierKey.NON ); 
+	}
+	
+	public void pressArrowUp(int times, ModifierKey mk) {
+		pressModefierKey(mk);
+		for (;times>0;times--) {
+			robert.keyPress( KeyEvent.VK_UP );
+		}
+		releaseModefierKey(mk);
+	}
+	
+	public void pressArrowDown(int times) {
+		pressArrowDown(times, ModifierKey.NON);
+	}
+	
+	public void pressArrowDown(int times, ModifierKey mk) {
+		pressModefierKey(mk);
+		for (;times>0;times--) {
+			robert.keyPress( KeyEvent.VK_DOWN );
+		}
+		releaseModefierKey(mk);
+	}
+
+	public void pressArrowLeft(int times) {
+		pressArrowLeft(times, ModifierKey.NON);
+	}
+	
+	public void pressArrowLeft(int times, ModifierKey mk) {
+		pressModefierKey(mk);
+		for (;times>0;times--) {
+			robert.keyPress( KeyEvent.VK_LEFT );
+		}
+		releaseModefierKey(mk);
+	}
+	
+	public void pressArrowRight(int times) {
+		pressArrowRight(times, ModifierKey.NON);
+	}
+	
+	public void pressArrowRight(int times, ModifierKey mk) {
+		pressModefierKey(mk);
+		for (;times>0;times--) {
+			robert.keyPress( KeyEvent.VK_RIGHT );
+		}
+		releaseModefierKey(mk);
+	}
+	
+	private void pressModefierKey(ModifierKey mk) {
+		switch (mk) {
+		case SHIFT:
+			robert.keyPress( KeyEvent.VK_SHIFT );
+			break;
+		case ALT:
+		case ALT_GR:
+			robert.keyPress( KeyEvent.VK_ALT );
+			break;
+		case COMMAND:
+		case WINDOWS:
+		case META:
+			robert.keyPress( KeyEvent.VK_META );
+			break;
+		case NON:
+		default:
+			// As default no key is pressed...	
+		}
+	}
+	
+	private void releaseModefierKey(ModifierKey mk) {
+		switch (mk) {
+		case SHIFT:
+			robert.keyRelease( KeyEvent.VK_SHIFT );
+			break;
+		case ALT:
+		case ALT_GR:
+			robert.keyRelease( KeyEvent.VK_ALT );
+			break;
+		case COMMAND:
+		case WINDOWS:
+		case META:
+			robert.keyRelease( KeyEvent.VK_META );
+			break;
+		case NON:
+		default:
+			// As default no key is released...	
+		}
 	}
 }
