@@ -1,11 +1,14 @@
 package com.xlent.robin;
 
 import java.awt.AWTException;
+import java.awt.Desktop;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -147,6 +150,22 @@ public class Robin {
 	 */
 	public void wait(int ms) {
 		robert.delay(ms);
+	}
+	
+	/**
+	 * Opens a program. The name has to be the real app name not the translated, e.g. "Chess" instead of "Schack".
+	 * 
+	 * @param name The name of the program.
+	 * @throws IOException If the program isn't fond
+	 */
+	public void openApp(String name) throws IOException {
+		
+		StringBuilder sb = new StringBuilder("/Applications/");
+		sb.append(name);
+		sb.append(".app");
+
+		Desktop.getDesktop().open(new File(sb.toString()));
+		
 	}
 	
 	/**
