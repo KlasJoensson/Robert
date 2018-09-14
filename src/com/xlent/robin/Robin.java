@@ -86,6 +86,50 @@ public class Robin {
 	}
 	
 	/**
+	 * Moves the mouses wheel "up", e.g. to scroll up a web-page.
+	 * 
+	 * @param notches The number of "notches" to move the mouse wheel
+	 */
+	public void scrollUp(int notches) {
+		scrollUp(notches, 0);
+	}
+	
+	/**
+	 * Moves the mouses wheel "up", e.g. to scroll up a web-page, with a delay to get a more smooth scrolling.
+	 * 
+	 * @param notches The number of "notches" to move the mouse wheel
+	 * @param delay The delay between each notch in ms
+	 */
+	public void scrollUp(int notches, int delay) {
+		while(notches-- > 0) {
+			robert.mouseWheel(1);
+			robert.delay(delay);
+		}
+	}
+	
+	/**
+	 * Moves the mouses wheel "down", e.g. to scroll down a web-page.
+	 * 
+	 * @param notches The number of "notches" to move the mouse wheel
+	 */
+	public void scrollDown(int notches) {
+		scrollDown(notches, 0);
+	}
+	
+	/**
+	 * Moves the mouses wheel "down", e.g. to scroll down a web-page, with a delay to get a more smooth scrolling.
+	 * 
+	 * @param notches The number of "notches" to move the mouse wheel
+	 * @param delay The delay between each notch in ms
+	 */
+	public void scrollDown(int notches, int delay) {
+		while(notches-- > 0) {
+			robert.mouseWheel(-1);
+			robert.delay(delay);
+		}
+	}
+	
+	/**
 	 * Moves the mouse pointer to a new location relative to its position.
 	 * 
 	 * @param x The number of pixels the mouse will move along the x-axis
@@ -94,6 +138,15 @@ public class Robin {
 	public void moveMouse(int x, int y) {
 		Point location = MouseInfo.getPointerInfo().getLocation();
 		moveMouseTo(location.x + x, location.y + y);
+	}
+	
+	/**
+	 * Makes it wait for a while.
+	 * 
+	 * @param ms The time to wait in ms.
+	 */
+	public void wait(int ms) {
+		robert.delay(ms);
 	}
 	
 	/**

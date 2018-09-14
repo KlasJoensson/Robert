@@ -20,10 +20,16 @@ public class RunRobin {
 	}
 	
 	private static void openNewTab(Robin robban) {
-		robban.moveMouseTo(1000, 60);
+		robban.moveMouseTo(1400, 60);
 		robban.leftClick();
-		robban.pressCommandPlusKey('t');
-		robban.write("smp.se\n");
+		robban.moveMouse(0, 30);
+		robban.leftClick();
+		//robban.pressKey('t', Robin.ModifierKey.COMMAND);
+		robban.write("gp.se\n");
+		robban.moveMouse(0, 200);
+		robban.wait(2000);
+		robban.scrollDown(20, 50);
+		robban.scrollUp(10, 0);
 	}
 	
 	private static void writeNote(Robin robban) {
@@ -46,8 +52,8 @@ public class RunRobin {
 		try {
 			Robin robban = Robin.getInstance();
 			//clickOnTab(robban);
-			//openNewTab(robban);
-			writeNote(robban);
+			openNewTab(robban);
+			//writeNote(robban);
 			//moveCursor(robban);
 			//System.out.println( KeyEvent.getKeyText(58) );
 			//System.out.println( KeyEvent.getExtendedKeyCodeForChar('t') );
