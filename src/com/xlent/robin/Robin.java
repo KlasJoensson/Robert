@@ -118,7 +118,7 @@ public class Robin {
 		robert.delay(200);
 	}
 	
-	/*
+	/**
 	 * Makes a double click with the left mouse button
 	 */
 	public void dubbleClick() {
@@ -127,12 +127,24 @@ public class Robin {
 		leftClick();
 	}
 	
+	/**
+	 * Drag and drop an item from where the mouse is to the coordinates given as arguments.
+	 * 
+	 * @param x The x-coordinate to move the mouse to
+	 * @param y The y-coordinate to move the mouse to
+	 */
 	public void dragDropTo(int x, int y) {
 		robert.mousePress(InputEvent.BUTTON1_MASK);
 		moveMouseTo(x, y);
 		robert.mouseRelease(InputEvent.BUTTON1_MASK);
 	}
 	
+	/**
+	 * Drag and drop an item from where the mouse is to a new position relative to the start position.
+	 * 
+	 * @param x The number of pixels the mouse will move along the x-axis
+	 * @param y The number of pixels the mouse will move along the y-axis
+	 */
 	public void dragDrop(int x, int y) {
 		robert.mousePress(InputEvent.BUTTON1_MASK);
 		moveMouse(x, y);
