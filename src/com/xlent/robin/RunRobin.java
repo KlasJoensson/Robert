@@ -19,6 +19,15 @@ import com.xlent.robin.Robin.ModifierKey;
  */
 public class RunRobin {
 	
+	private static void dragDropFile(Robin robban) {
+		robban.moveMouseTo(1200, 100);
+		robban.leftClick();
+		robban.moveMouseTo(1200, 190);
+		//robban.dragDrop(-110, 110);
+		robban.dragDropTo(875, 300);
+		//robban.moveMouseTo(875, 300);
+	}
+	
 	private static void clickOnTab(Robin robban) {
 		robban.moveMouseTo(200, 50);
 	}
@@ -79,7 +88,8 @@ public class RunRobin {
 	public static void main(String[] args) {
 		try {
 			Robin robban = Robin.getInstance();
-			openMail(robban);
+			dragDropFile(robban);
+			//openMail(robban);
 			//clickOnTab(robban);
 			//openNewTab(robban);
 			//openFromDock(robban);

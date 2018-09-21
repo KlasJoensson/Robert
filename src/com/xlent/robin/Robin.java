@@ -127,6 +127,18 @@ public class Robin {
 		leftClick();
 	}
 	
+	public void dragDropTo(int x, int y) {
+		robert.mousePress(InputEvent.BUTTON1_MASK);
+		moveMouseTo(x, y);
+		robert.mouseRelease(InputEvent.BUTTON1_MASK);
+	}
+	
+	public void dragDrop(int x, int y) {
+		robert.mousePress(InputEvent.BUTTON1_MASK);
+		moveMouse(x, y);
+		robert.mouseRelease(InputEvent.BUTTON1_MASK);
+	}
+	
 	/**
 	 * Moves the mouse pointer to a specific location on the screen.
 	 * 
@@ -136,6 +148,17 @@ public class Robin {
 	public void moveMouseTo(int x, int y) {
 		robert.mouseMove(x, y);
 		robert.delay(500);
+	}
+	
+	/**
+	 * Moves the mouse pointer to a new location relative to its position.
+	 * 
+	 * @param x The number of pixels the mouse will move along the x-axis
+	 * @param y The number of pixels the mouse will move along the y-axis
+	 */
+	public void moveMouse(int x, int y) {
+		Point location = MouseInfo.getPointerInfo().getLocation();
+		moveMouseTo(location.x + x, location.y + y);
 	}
 	
 	/**
@@ -180,17 +203,6 @@ public class Robin {
 			robert.mouseWheel(-1);
 			robert.delay(delay);
 		}
-	}
-	
-	/**
-	 * Moves the mouse pointer to a new location relative to its position.
-	 * 
-	 * @param x The number of pixels the mouse will move along the x-axis
-	 * @param y The number of pixels the mouse will move along the y-axis
-	 */
-	public void moveMouse(int x, int y) {
-		Point location = MouseInfo.getPointerInfo().getLocation();
-		moveMouseTo(location.x + x, location.y + y);
 	}
 	
 	/****************************************
