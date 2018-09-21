@@ -59,6 +59,35 @@ public class Robin {
 	}
 	
 	/**
+	 * Makes it wait for a while.
+	 * 
+	 * @param ms The time to wait in ms.
+	 */
+	public void wait(int ms) {
+		robert.delay(ms);
+	}
+	
+	/**
+	 * Opens a program. The name has to be the real app name not the translated, e.g. "Chess" instead of "Schack".
+	 * 
+	 * @param name The name of the program.
+	 * @throws IOException If the program isn't fond
+	 */
+	public void openApp(String name) throws IOException {
+		
+		StringBuilder sb = new StringBuilder("/Applications/");
+		sb.append(name);
+		sb.append(".app");
+
+		Desktop.getDesktop().open(new File(sb.toString()));
+		
+	}
+	
+	/*************************************
+	 * Methods for controlling the mouse *
+	 *************************************/
+	
+	/**
 	 * Makes a right click with the mouse
 	 */
 	public void rightClick() {
@@ -164,30 +193,9 @@ public class Robin {
 		moveMouseTo(location.x + x, location.y + y);
 	}
 	
-	/**
-	 * Makes it wait for a while.
-	 * 
-	 * @param ms The time to wait in ms.
-	 */
-	public void wait(int ms) {
-		robert.delay(ms);
-	}
-	
-	/**
-	 * Opens a program. The name has to be the real app name not the translated, e.g. "Chess" instead of "Schack".
-	 * 
-	 * @param name The name of the program.
-	 * @throws IOException If the program isn't fond
-	 */
-	public void openApp(String name) throws IOException {
-		
-		StringBuilder sb = new StringBuilder("/Applications/");
-		sb.append(name);
-		sb.append(".app");
-
-		Desktop.getDesktop().open(new File(sb.toString()));
-		
-	}
+	/****************************************
+	 * Methods for controlling the keyboard *
+	 ****************************************/
 	
 	/**
 	 * Types a string in the active field, document etc. At the moment all printebly chars 
