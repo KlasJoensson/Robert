@@ -211,6 +211,16 @@ public class Robin {
 	/**
 	 * Press a key and a modifier key, e.g. Shift + k for K
 	 * 
+	 * @param c The char on the key to be pressed
+	 * @param mk The modifier key
+	 */
+	public void pressKey(char c, ModifierKey mk) {
+		pressKey(KeyEvent.getExtendedKeyCodeForChar(c),  mk);
+	}
+	
+	/**
+	 * Press a key and a modifier key, e.g. Shift + k for K
+	 * 
 	 * @param i An integer representing the key to be pressed
 	 * @param mk The modifier key
 	 */
@@ -218,6 +228,16 @@ public class Robin {
 		pressModefierKey(mk);
 		pressKey( i );
 		releaseModefierKey(mk);
+	}
+	
+	/**
+	 * Press a key and a modifier key, e.g. Shift + Alt + 9 for }
+	 * 
+	 * @param c The char on the key to be pressed
+	 * @param mk An array with the modifier keys
+	 */
+	public void pressKey(char c, ModifierKey[] mk) {
+		pressKey(KeyEvent.getExtendedKeyCodeForChar(c),  mk);
 	}
 	
 	/**
