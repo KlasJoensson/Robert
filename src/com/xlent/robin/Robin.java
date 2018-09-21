@@ -59,12 +59,33 @@ public class Robin {
 	}
 	
 	/**
+	 * Makes a right click with the mouse
+	 */
+	public void rightClick() {
+		mouseClick(InputEvent.BUTTON3_MASK);
+	}
+	
+	/**
+	 * Makes a wheel click with the mouse
+	 */
+	public void wheelClick() {
+		mouseClick(InputEvent.BUTTON2_MASK);
+	}
+	
+	/**
 	 * Makes a left click with the mouse
 	 */
 	public void leftClick() {
-		robert.mousePress(InputEvent.BUTTON1_MASK);
+		mouseClick(InputEvent.BUTTON1_MASK);
+	}
+	
+	/**
+	 * Makes a left click with the mouse
+	 */
+	private void mouseClick(int button) {
+		robert.mousePress(button);
 		robert.delay(200);
-		robert.mouseRelease(InputEvent.BUTTON1_MASK);
+		robert.mouseRelease(button);
 		robert.delay(200);
 	}
 	

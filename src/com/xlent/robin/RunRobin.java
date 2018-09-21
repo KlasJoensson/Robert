@@ -14,7 +14,6 @@ import com.xlent.robin.Robin.ModifierKey;
 
 /**
  * This class is for making use of the little robot Robin.
- * My screen is 1680x1050 px
  * 
  * @author Klas Jönsson
  */
@@ -22,6 +21,14 @@ public class RunRobin {
 	
 	private static void clickOnTab(Robin robban) {
 		robban.moveMouseTo(200, 50);
+	}
+	
+	private static void openMail(Robin robban) {
+		robban.moveMouseTo(200, 50);
+		robban.leftClick();
+		robban.moveMouseTo(360, 325);
+		robban.rightClick();
+		robban.moveMouse(30, 10);
 		robban.leftClick();
 	}
 	
@@ -67,11 +74,19 @@ public class RunRobin {
 		robban.pressArrowRight(10, ModifierKey.SHIFT);
 	}
 	
+	
+	
 	public static void main(String[] args) {
 		try {
 			Robin robban = Robin.getInstance();
+			openMail(robban);
 			//clickOnTab(robban);
-			/*Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			//openNewTab(robban);
+			//openFromDock(robban);
+			//writeNote(robban);
+			//moveCursor(robban);
+			/* Just for checking my screen sizes, witch is: 1680x1050 px
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			double width0 = screenSize.getWidth();
 			double height0 = screenSize.getHeight();
 			System.out.println("With Toolkit:");
@@ -82,11 +97,7 @@ public class RunRobin {
 			int height1 = gd.getDisplayMode().getHeight();
 			System.out.println("With GraphicsEnvironment:");
 			System.out.println("Width: " + width1);
-			System.out.println("height: " + height1);*/
-			openNewTab(robban);
-			//openFromDock(robban);
-			//writeNote(robban);
-			//moveCursor(robban);
+			System.out.println("height: " + height1);*/		
 			//System.out.println( KeyEvent.getKeyText(58) );
 			//System.out.println( KeyEvent.getExtendedKeyCodeForChar('t') );
 			//System.out.println( KeyEvent.getKeyText(KeyEvent.getExtendedKeyCodeForChar('t')) );
