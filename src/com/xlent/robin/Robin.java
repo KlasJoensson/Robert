@@ -9,6 +9,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
 
 /**
@@ -37,11 +38,14 @@ public class Robin {
 	
 	static Robin robin;
 	static Robot robert;
+	static Preferences pref;
 	
 	private Robin() throws AWTException {	
 		robert = new Robot();
 		robert.setAutoDelay(40);
 		robert.setAutoWaitForIdle(true);
+		
+		pref = new Preferences();
 	}
 
 	/**
@@ -71,17 +75,27 @@ public class Robin {
 	 * Opens a program. The name has to be the real app name not the translated, e.g. "Chess" instead of "Schack".
 	 * 
 	 * @param name The name of the program.
-	 * @throws IOException If the program isn't fond
+	 * @throws NoSuchFileException If the program isn't fond
+	 * @throws IOException If there's something else that goes is wrong
+	 * 
 	 */
-	public void openApp(String name) throws IOException {
+	public void openApp(String name) throws IOException, NoSuchFileException {
 		
 		StringBuilder sb = new StringBuilder("/Applications/");
 		sb.append(name);
 		if (!name.endsWith(".app"))
 			sb.append(".app");
-
-		Desktop.getDesktop().open(new File(sb.toString()));
-		
+		try {
+			Desktop.getDesktop().open(new File(sb.toString()));
+		} catch (IllegalArgumentException e) {
+			String newName = pref.getTranslatedAppName(name);
+			sb.replace(sb.indexOf(name), sb.indexOf(".app"), newName);
+			try {
+				Desktop.getDesktop().open(new File(sb.toString()));
+			} catch (IllegalArgumentException e2) {
+				throw new NoSuchFileException("Could not find any app with the name: " + name);
+			}
+		}
 	}
 	
 	/*************************************

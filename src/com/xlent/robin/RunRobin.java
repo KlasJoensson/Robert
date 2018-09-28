@@ -89,13 +89,14 @@ public class RunRobin {
 	public static void main(String[] args) {
 		try {
 			Robin robban = Robin.getInstance();
+			robban.openApp("Schack");
 			//dragDropFile(robban);
 			
-			Preferences test = new Preferences();
+			/*Preferences test = new Preferences();
 			Map<String, String> appMap = test.getMap();
 			for (String key:appMap.keySet()) {
 				System.out.println(key+" => "+appMap.get(key));
-			}
+			}*/
 			/*String testStr = test.getTranslatedAppName("Schack");
 			if (testStr != null && !testStr.isEmpty() ) {
 				System.out.println("Found it! ("+testStr+").");
@@ -134,6 +135,9 @@ public class RunRobin {
 			}*/
 		} catch (AWTException e) {
 			fail("Could not initiate: " + e.getMessage() );
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
