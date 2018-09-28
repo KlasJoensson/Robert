@@ -77,7 +77,8 @@ public class Robin {
 		
 		StringBuilder sb = new StringBuilder("/Applications/");
 		sb.append(name);
-		sb.append(".app");
+		if (!name.endsWith(".app"))
+			sb.append(".app");
 
 		Desktop.getDesktop().open(new File(sb.toString()));
 		
