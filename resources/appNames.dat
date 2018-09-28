@@ -1,14 +1,15 @@
-#syntax: translated/short name of the app=the real name of the app
+Dictionary=Ordbok
+Förhandsvisning=Preview
+DVD-spelare=DVD Player
+Kalender=Calendar
+Miniräknare=Calculator
+comment@1=#syntax: translated/short name of the app=the real name of the app
 Antekningar=Notes
 Bilder=Photos
-Bildinsamling=Image caputre
-DVD-spelare=DVD Player
-Förhandsvisning=Preview
-Chrome=Google Chrome
-Kalender=Calendar
-Kalkylator=Calculator
-Miniräknare=Calculator
-Kartor=Maps
 Kom-ihåg-lappar=Stickies
-Kontakter=Contacts
 Schack=Chess
+Kalkylator=Calculator
+Bildinsamling=Image caputre
+Chrome=Google Chrome
+Kontakter=Contacts
+Kartor=Maps

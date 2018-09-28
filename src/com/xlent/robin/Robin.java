@@ -89,7 +89,11 @@ public class Robin {
 			Desktop.getDesktop().open(new File(sb.toString()));
 		} catch (IllegalArgumentException e) {
 			String newName = pref.getTranslatedAppName(name);
-			sb.replace(sb.indexOf(name), sb.indexOf(".app"), newName);
+			if (newName.endsWith(".app")) {
+				sb.replace(sb.indexOf(name), sb.length(), newName);
+			} else {
+				sb.replace(sb.indexOf(name), sb.indexOf(".app"), newName);
+			}
 			try {
 				Desktop.getDesktop().open(new File(sb.toString()));
 			} catch (IllegalArgumentException e2) {
