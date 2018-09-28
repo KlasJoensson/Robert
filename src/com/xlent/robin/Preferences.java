@@ -16,7 +16,7 @@ import java.util.stream.Stream;
  */
 public class Preferences {
 
-	Map<String, String> appNames;
+	private Map<String, String> appNames;
 	
 	public Preferences() {
 		populateMaps();
@@ -51,4 +51,7 @@ public class Preferences {
 		// TODO save it to the file as well!
 	}
 	
+	public Map<String, String> getMap() {
+		return appNames;
+	}
 }
