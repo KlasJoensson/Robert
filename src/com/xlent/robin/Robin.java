@@ -10,7 +10,11 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a wrapper class to make the use of java.awt.Robot easier.
@@ -687,4 +691,39 @@ public class Robin {
 			// As default no key is released...	
 		}
 	}
+	
+	/**
+	 * Returns a map with the different commands name sorted in categories.
+	 * 
+	 * @return The name of the commands
+	 */
+	//TODO Add commands for all methods
+	public Map<String, List<String>> getCommandsAsTree() {
+		Map<String, List<String>> commandTree = new HashMap<String, ArrayList<String>>();
+		
+		List<String> mouseActions = new ArrayList<String>();
+		mouseActions.add("Click left button");
+		mouseActions.add("Click wheel button");
+		mouseActions.add("Click right button");
+		mouseActions.add("Double Click");
+		commandTree.put("Mouse button", mouseActions);
+		
+		List<String> mouseMoves = new ArrayList<String>();
+		mouseMoves.add("Move to");
+		mouseMoves.add("Drag drop to");
+		mouseMoves.add("Scroll wheel");
+		commandTree.put("Move mouse", mouseMoves);
+		
+		List<String> keyboardActions = new ArrayList<String>();
+		keyboardActions.add("Use short cut");
+		keyboardActions.add("Press arrowkey");
+		commandTree.put("Keyboard", keyboardActions);
+		
+		List<String> textActions = new ArrayList<String>();
+		textActions.add("Write text");
+		commandTree.put("Other", textActions);
+		
+		return commandTree;
+	}
+	
 }
