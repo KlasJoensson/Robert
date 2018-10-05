@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -31,35 +32,46 @@ import javafx.stage.Stage;
  */
 public class RunRobin extends Application {
 
+	private TreeView<TreeItem> commandTreeView;
+	private ListView commandListView;
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Robert - your RPA friend");
 		
-		/*TextField textField = new TextField();
-		Button btn = new Button("Click me to reveal the above text");
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
-				System.out.println("Entered text is " + textField.getText());
-				textField.clear();
-			}
-		});*/
 		BorderPane pane = new BorderPane();
-		//pane.setPadding(new Insets(70));
+		pane.setPadding(new Insets(10));
 		pane.setBottom(getButtonPane());
-		pane.setCenter(getCommandView());
-		/*VBox paneCenter = new VBox();
-		paneCenter.setSpacing(10);
+		
+		commandListView = new ListView();
+		commandTreeView = getCommandView();
+		HBox paneCenter = new HBox();
+		paneCenter.setSpacing(5);
 		pane.setCenter(paneCenter);
-		paneCenter.getChildren().add(textField);
-		paneCenter.getChildren().add(btn);*/
-		Scene scene= new Scene(pane, 400, 600);
+		paneCenter.getChildren().add(commandTreeView);
+		paneCenter.getChildren().add(getMoveBtnPane());
+		paneCenter.getChildren().add(commandListView);
+		
+		Scene scene = new Scene(pane, 600, 600);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
+	private VBox getMoveBtnPane() {
+		VBox btnBox = new VBox();
+		Button addBtn = new Button(">>");
+		addBtn.setPrefSize(50, 30);
+		addBtn.setOnAction(addBtnEventHandler);
+		btnBox.getChildren().add(addBtn);
+
+		Button removeBtn = new Button("<<");
+		removeBtn.setPrefSize(50, 30);
+		removeBtn.setOnAction(removeBtnEventHandler);
+		btnBox.getChildren().add(removeBtn);
+		
+		return btnBox;
+	}
+	
 	private HBox getButtonPane() {
 		Button saveBtn = new Button("Save");
 		saveBtn.setOnAction(saveBtnEventHandler);
@@ -135,6 +147,23 @@ public class RunRobin extends Application {
 		}
 	};
 	
+	private EventHandler<ActionEvent> addBtnEventHandler = new EventHandler<ActionEvent>() {	
+		@Override
+		public void handle(ActionEvent event) {
+			TreeItem selected = commandTreeView.getSelectionModel().getSelectedItem();
+			if (selected != null && selected.getChildren().isEmpty())
+				commandListView.getItems().add(selected.getValue());
+		}
+	};
+	
+	private EventHandler<ActionEvent> removeBtnEventHandler = new EventHandler<ActionEvent>() {	
+		@Override
+		public void handle(ActionEvent event) {
+			int index = commandListView.getSelectionModel().getSelectedIndex();
+			if (index > 0)
+				commandListView.getItems().remove(index);
+		}
+	};
 	public static void main(String[] args) {
 		launch(args);
 	}
