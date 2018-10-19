@@ -12,12 +12,16 @@ public class MoveMouseTo extends Command {
 		super("Move to");
 		this.x = 42;
 		this.y = 42;
+		this.arguments.put("x", x);
+		this.arguments.put("y", y);
 	}
 
 	public MoveMouseTo(int x, int y) throws AWTException {
 		super("Move to");
 		this.x = x;
 		this.y = y;
+		this.arguments.put("x", x);
+		this.arguments.put("y", y);
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import com.xlent.robin.commands.DragDropTo;
 import com.xlent.robin.commands.MouseClick;
 import com.xlent.robin.commands.MoveMouseTo;
 import com.xlent.robin.commands.PressArrowKey;
+import com.xlent.robin.commands.PressKey;
 import com.xlent.robin.commands.ScrollMouseWheel;
 import com.xlent.robin.commands.Wait;
 import com.xlent.robin.commands.WriteText;
@@ -83,6 +84,9 @@ public class CommandFactory {
 			break;
 		case "Press arrowkey":
 			command = new PressArrowKey(name);
+			break;
+		case "Use short cut":
+			command = new PressKey(name);
 			break;
 		case "Write text":
 			command = new WriteText();

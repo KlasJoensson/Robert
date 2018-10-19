@@ -2,12 +2,15 @@ package com.xlent.robin;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-
+import java.awt.AWTException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.xlent.robin.Robin.ModifierKey;
+import com.xlent.robin.commands.Command;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,12 +19,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -32,8 +37,10 @@ import javafx.stage.Stage;
  */
 public class RunRobin extends Application {
 
-	private TreeView<TreeItem> commandTreeView;
-	private ListView commandListView;
+	private TreeView<TreeItem<String>> commandTreeView;
+	private ListView<Command> commandListView;
+	private List<Command> commandList = new ArrayList<>();
+	private CommandFactory commandFactory = new CommandFactory();
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -43,7 +50,7 @@ public class RunRobin extends Application {
 		pane.setPadding(new Insets(10));
 		pane.setBottom(getButtonPane());
 		
-		commandListView = new ListView();
+		commandListView = new ListView<Command>();
 		commandTreeView = getCommandView();
 		HBox paneCenter = new HBox();
 		paneCenter.setSpacing(5);
@@ -69,6 +76,12 @@ public class RunRobin extends Application {
 		removeBtn.setOnAction(removeBtnEventHandler);
 		btnBox.getChildren().add(removeBtn);
 		
+		// TODO Move to its panel when it exist
+		Button editBtn = new Button("Edit");
+		editBtn.setPrefSize(50, 30);
+		editBtn.setOnAction(editBtnEventHandler);
+		btnBox.getChildren().add(editBtn);
+		
 		return btnBox;
 	}
 	
@@ -89,7 +102,7 @@ public class RunRobin extends Application {
 		return hBox;
 	}
 	
-	private TreeView getCommandView() {
+	private TreeView<TreeItem<String>> getCommandView() {
 		TreeView commandView = new TreeView();
 		TreeItem rootItem = new TreeItem("Commands");
 		
@@ -112,6 +125,41 @@ public class RunRobin extends Application {
 		list.stream().forEach(name -> commandList.add(new TreeItem(name)));
 		
 		return commandList;
+	}
+	
+	private Stage getEditStage(Command command) {
+		
+		BorderPane editLayout = new BorderPane(); 
+		Map<String, Object> args = command.getArgunments();
+		List<Object> values = new ArrayList<>();
+		HBox pane;
+		VBox argPane = new VBox();
+		for (String arg:args.keySet()) {
+			pane = new HBox();
+			pane.getChildren().add(new Label(arg));
+			TextField field = new TextField();
+			field.setText(args.get(arg).toString());
+			pane.getChildren().add(field);
+			values.add(field);
+			argPane.getChildren().add(pane);
+		}
+		editLayout.setCenter(argPane);
+		
+		HBox controlPane = new HBox();
+		Button editSave = new Button("Save");
+		controlPane.getChildren().add(editSave);
+		Button editCancel = new Button("Cancel");
+		controlPane.getChildren().add(editCancel);
+		
+		editLayout.setBottom(controlPane);
+		
+        Scene editScene = new Scene(editLayout, 230, 100);
+         
+        Stage editStage = new Stage();
+        editStage.setTitle("Edit " + command.getName() );
+        editStage.setScene(editScene);
+        
+		return editStage;
 	}
 	
 	private EventHandler<ActionEvent> saveBtnEventHandler = new EventHandler<ActionEvent>() {	
@@ -151,8 +199,16 @@ public class RunRobin extends Application {
 		@Override
 		public void handle(ActionEvent event) {
 			TreeItem selected = commandTreeView.getSelectionModel().getSelectedItem();
-			if (selected != null && selected.getChildren().isEmpty())
-				commandListView.getItems().add(selected.getValue());
+			if (selected != null && selected.getChildren().isEmpty()) {
+				String commandName = (String) selected.getValue();
+				try {
+					Command command = commandFactory.createCommand(commandName);
+					commandListView.getItems().add(command);
+				} catch (AWTException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	};
 	
@@ -160,10 +216,23 @@ public class RunRobin extends Application {
 		@Override
 		public void handle(ActionEvent event) {
 			int index = commandListView.getSelectionModel().getSelectedIndex();
-			if (index > 0)
+			if (index >= 0)
 				commandListView.getItems().remove(index);
 		}
 	};
+	
+	private EventHandler<ActionEvent> editBtnEventHandler = new EventHandler<ActionEvent>() {	
+		@Override
+		public void handle(ActionEvent event) {
+			Command command = commandListView.getSelectionModel().getSelectedItem();
+			if (command != null) {
+				Stage editWindow = getEditStage(command);
+				editWindow.show();
+			}
+				
+		}
+	};
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

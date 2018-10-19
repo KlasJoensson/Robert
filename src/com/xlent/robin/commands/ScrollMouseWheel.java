@@ -10,11 +10,13 @@ public class ScrollMouseWheel extends Command {
 	public ScrollMouseWheel() throws AWTException {
 		super("Scroll wheel");
 		notches = 42;
+		arguments.put("Notches", notches);
 	}
 
 	public ScrollMouseWheel(int notches) throws AWTException {
 		super("Scroll wheel");
 		this.notches = notches;
+		arguments.put("Notches", notches);
 	}
 	
 	@Override

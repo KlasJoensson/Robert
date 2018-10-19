@@ -18,7 +18,14 @@ public class MouseClick extends Command {
 	
 	public MouseClick(String name) throws AWTException {
 		super(name);
+		setTypeByName(name);
 		
+		arguments.put("Button", type);
+		argumentMap.put("Left button", MouseButton.LEFT);
+		argumentMap.put("Right button", MouseButton.RIGHT);
+		argumentMap.put("Wheel button", MouseButton.WHEEL);
+		argumentMap.put("Middle button", MouseButton.MIDDLE);
+		argumentMap.put("Dobble click", MouseButton.DOUBLE_CLICK);
 	}
 
 	@Override

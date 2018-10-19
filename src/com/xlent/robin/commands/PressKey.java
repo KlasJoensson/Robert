@@ -15,6 +15,10 @@ public class PressKey extends Command {
 		super(name);
 		key = ' ';
 		modifierKeys = new Robin.ModifierKey[3];
+		this.arguments.put("Key", key);
+		this.arguments.put("ModifierKey0", modifierKeys[0]);
+		this.arguments.put("ModifierKey1", modifierKeys[0]);
+		this.arguments.put("ModifierKey2", modifierKeys[0]);
 	}
 
 	@Override

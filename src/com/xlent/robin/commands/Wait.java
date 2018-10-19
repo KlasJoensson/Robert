@@ -12,13 +12,13 @@ public class Wait extends Command {
 	public Wait() throws AWTException {
 		super("Wait");
 		ms = 42;
+		arguments.put("Time (ms)", ms);
 	}
 
 	@Override
 	public void changeParameters(Map<String, Object> args) {
 		ms = (int) args.getOrDefault("Time", ms);
-		ms = 1000 * ( (int) args.getOrDefault("Time in sec", (ms/1000)) );
-		ms = 60000 * ( (int) args.getOrDefault("Time in min", (ms/60000)) );
+		arguments.put("Time (ms)", ms);
 	}
 
 	@Override

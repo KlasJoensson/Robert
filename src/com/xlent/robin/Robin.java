@@ -13,6 +13,7 @@ import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a wrapper class to make the use of java.awt.Robot easier.
@@ -50,6 +51,24 @@ public class Robin {
 		pref = new Preferences();
 	}
 
+	/**
+	 * To get a map with human readable names matched to the value of the ModiferKeys.
+	 * 
+	 * @return The names of the modiferKeys
+	 */
+	public Map<String, ModifierKey> getModifierKeys() {
+		Map<String, ModifierKey> modKeys = new HashMap<>();
+		modKeys.put("Shift", ModifierKey.SHIFT);
+		modKeys.put("Alt", ModifierKey.ALT);
+		modKeys.put("Alt graph", ModifierKey.ALT_GR);
+		modKeys.put("Command", ModifierKey.COMMAND);
+		modKeys.put("Windows", ModifierKey.WINDOWS);
+		modKeys.put("Meta", ModifierKey.META);
+		modKeys.put("No key", ModifierKey.NON);
+		
+		return modKeys;
+	}
+	
 	/**
 	 * Creates and returns an new instance of the Robert Robin.
 	 * 

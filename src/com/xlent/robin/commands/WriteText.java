@@ -12,11 +12,13 @@ public class WriteText extends Command {
 	public WriteText() throws AWTException {
 		super("Write text");
 		text = "";
+		arguments.put("Text to write", text);
 	}
 
 	@Override
 	public void changeParameters(Map<String, Object> args) {
 		text = (String) args.getOrDefault("Text", text);
+		arguments.put("Text to write", text);
 	}
 
 	@Override

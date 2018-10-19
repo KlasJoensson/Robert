@@ -12,12 +12,16 @@ public class DragDropTo extends Command {
 		super("Drag-drop to");
 		this.x = 42;
 		this.y = 42;
+		this.arguments.put("x", x);
+		this.arguments.put("y", y);
 	}
 
 	public DragDropTo(int x, int y) throws AWTException {
 		super("Drag-drop to");
 		this.x = x;
 		this.y = y;
+		this.arguments.put("x", x);
+		this.arguments.put("y", y);
 	}
 	@Override
 	public void changeParameters(Map<String, Object> args) {
