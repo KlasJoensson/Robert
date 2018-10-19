@@ -129,6 +129,8 @@ public class RunRobin extends Application {
 	
 	private Stage getEditStage(Command command) {
 		
+		Stage editStage = new Stage();
+		
 		BorderPane editLayout = new BorderPane(); 
 		Map<String, Object> args = command.getArgunments();
 		List<Object> values = new ArrayList<>();
@@ -147,15 +149,29 @@ public class RunRobin extends Application {
 		
 		HBox controlPane = new HBox();
 		Button editSave = new Button("Save");
+		editSave.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Save the values!
+				editStage.close();
+			}
+		});
 		controlPane.getChildren().add(editSave);
 		Button editCancel = new Button("Cancel");
+		editCancel.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				editStage.close();
+			}
+		});
 		controlPane.getChildren().add(editCancel);
 		
 		editLayout.setBottom(controlPane);
 		
         Scene editScene = new Scene(editLayout, 230, 100);
          
-        Stage editStage = new Stage();
         editStage.setTitle("Edit " + command.getName() );
         editStage.setScene(editScene);
         
@@ -227,7 +243,7 @@ public class RunRobin extends Application {
 			Command command = commandListView.getSelectionModel().getSelectedItem();
 			if (command != null) {
 				Stage editWindow = getEditStage(command);
-				editWindow.show();
+				editWindow.show();		
 			}
 				
 		}
