@@ -7,8 +7,12 @@ import java.util.Map;
 
 import com.xlent.robin.commands.Command;
 import com.xlent.robin.commands.DragDropTo;
+import com.xlent.robin.commands.MouseClick;
 import com.xlent.robin.commands.MoveMouseTo;
+import com.xlent.robin.commands.PressArrowKey;
 import com.xlent.robin.commands.ScrollMouseWheel;
+import com.xlent.robin.commands.Wait;
+import com.xlent.robin.commands.WriteText;
 
 public class CommandFactory {
 
@@ -45,12 +49,20 @@ public class CommandFactory {
 		
 		ArrayList<String> textActions = new ArrayList<String>();
 		textActions.add("Write text");
+		textActions.add("Wait");
 		commandTree.put("Other", textActions);
 		
 		return commandTree;
 	}
 	
 	public Command createCommand(String name, Map<String, Object> args) throws AWTException {
+		Command command = createCommand(name);
+		command.changeParameters(args);
+		
+		return command;
+	}
+	
+	public Command createCommand(String name) throws AWTException {
 
 		Command command;
 		switch (name) {
@@ -59,13 +71,28 @@ public class CommandFactory {
 			break;
 		case "Scroll wheel":
 			command = new ScrollMouseWheel();
+			break;
 		case "Drag drop to":
 			command = new DragDropTo();
+			break;
+		case "Click left button":
+		case "Click wheel button":
+		case "Click right button":
+		case "Double Click":
+			command = new MouseClick(name);
+			break;
+		case "Press arrowkey":
+			command = new PressArrowKey(name);
+			break;
+		case "Write text":
+			command = new WriteText();
+			break;
+		case "Wait":
+			command = new Wait();
+			break;
 		default:
 			return null;
 		}
-		
-		command.changeParameters(args);
 		
 		return command;
 	}
