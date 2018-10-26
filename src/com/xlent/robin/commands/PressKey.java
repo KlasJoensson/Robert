@@ -17,8 +17,8 @@ public class PressKey extends Command {
 		modifierKeys = new Robin.ModifierKey[3];
 		this.arguments.put("Key", key);
 		this.arguments.put("ModifierKey0", modifierKeys[0]);
-		this.arguments.put("ModifierKey1", modifierKeys[0]);
-		this.arguments.put("ModifierKey2", modifierKeys[0]);
+		this.arguments.put("ModifierKey1", modifierKeys[1]);
+		this.arguments.put("ModifierKey2", modifierKeys[2]);
 	}
 
 	@Override
@@ -31,10 +31,29 @@ public class PressKey extends Command {
 		}
 	
 		modifierKeys[0] = (ModifierKey) args.getOrDefault("ModifierKey", ModifierKey.NON);
-		modifierKeys[0] = (ModifierKey) args.getOrDefault("ModifierKey0", ModifierKey.NON);
-		modifierKeys[1] = (ModifierKey) args.getOrDefault("ModifierKey1", ModifierKey.NON);
-		modifierKeys[2] = (ModifierKey) args.getOrDefault("ModifierKey2", ModifierKey.NON);
-
+		Object modObj = args.get("ModifierKey0");
+		if(modObj instanceof ModifierKey) {
+			modifierKeys[0] = (ModifierKey) modObj;
+		} else if(modObj instanceof String) {
+			modifierKeys[0] = Robin.getModifierKeys().getOrDefault((String) modObj, ModifierKey.NON);
+		}
+		modObj = args.get("ModifierKey1");
+		if(modObj instanceof ModifierKey) {
+			modifierKeys[1] = (ModifierKey) modObj;
+		} else if(modObj instanceof String) {
+			modifierKeys[1] = Robin.getModifierKeys().getOrDefault((String) modObj, ModifierKey.NON);
+		}
+		modObj = args.get("ModifierKey2");
+		if(modObj instanceof ModifierKey) {
+			modifierKeys[2] = (ModifierKey) modObj;
+		} else if(modObj instanceof String) {
+			modifierKeys[2] = Robin.getModifierKeys().getOrDefault((String) modObj, ModifierKey.NON);
+		}
+		
+		this.arguments.put("Key", key);
+		this.arguments.put("ModifierKey0", modifierKeys[0]);
+		this.arguments.put("ModifierKey1", modifierKeys[1]);
+		this.arguments.put("ModifierKey2", modifierKeys[2]);
 	}
 
 	@Override

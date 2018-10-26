@@ -24,7 +24,11 @@ public class ScrollMouseWheel extends Command {
 		Object notchesObj = args.get("notches");
 		if (notchesObj instanceof Integer) {
 			this.notches = (int) notchesObj;
+		} else if (notchesObj instanceof String) {
+			this.notches = Integer.parseInt((String)notchesObj);
 		}
+		
+		arguments.put("Notches", notches);
 	}
 
 	@Override

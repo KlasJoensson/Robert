@@ -30,7 +30,13 @@ public class MouseClick extends Command {
 
 	@Override
 	public void changeParameters(Map<String, Object> args) {
-		type = (MouseButton) args.getOrDefault("Button", MouseButton.NON);
+		Object arg = args.get("Button");
+		if (arg instanceof MouseButton) {
+			type = (MouseButton) arg;
+		} else if (arg instanceof String) {
+			setTypeByName((String) arg);
+		}
+		arguments.put("Button", type);
 	}
 
 	private void setTypeByName(String name) {

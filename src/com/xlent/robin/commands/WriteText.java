@@ -17,7 +17,7 @@ public class WriteText extends Command {
 
 	@Override
 	public void changeParameters(Map<String, Object> args) {
-		text = (String) args.getOrDefault("Text", text);
+		text = (String) args.getOrDefault("Text to write", text);
 		arguments.put("Text to write", text);
 	}
 

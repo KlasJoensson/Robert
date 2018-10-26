@@ -3,6 +3,7 @@ package com.xlent.robin.commands;
 import java.awt.AWTException;
 import java.util.Map;
 
+import com.xlent.robin.Robin;
 import com.xlent.robin.Robin.ModifierKey;
 import com.xlent.robin.commands.Command;
 import com.xlent.robin.commands.MouseClick.MouseButton;
@@ -51,9 +52,26 @@ public class PressArrowKey extends Command {
 	
 	@Override
 	public void changeParameters(Map<String, Object> args) {
-		keyPressed = (ArrowKey) args.getOrDefault("Key", this.keyPressed);
-		times = (int) args.getOrDefault("Times", this.times);
-		modifier = (ModifierKey) args.getOrDefault("ModifierKey", this.modifier);
+		Object kpObj = args.getOrDefault("Key", this.keyPressed);
+		if (kpObj instanceof ArrowKey) {
+			keyPressed = (ArrowKey) kpObj;
+		} else if (kpObj instanceof String) {
+			setKeyPressedFromName( (String) kpObj );
+		}
+		Object tObj = args.getOrDefault("Times", this.times);
+		if (tObj instanceof Integer) {
+			times = (int) tObj;
+		}
+		
+		Object modObj = args.get("ModifierKey");
+		if(modObj instanceof ModifierKey) {
+			modifier = (ModifierKey) modObj;
+		} else if(modObj instanceof String) {
+			modifier = Robin.getModifierKeys().getOrDefault((String) modObj, ModifierKey.NON);
+		}
+		arguments.put("Key", keyPressed);
+		arguments.put("Times", times);
+		arguments.put("ModifierKey", modifier);		
 	}
 
 	@Override

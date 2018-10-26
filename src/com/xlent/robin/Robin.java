@@ -56,7 +56,7 @@ public class Robin {
 	 * 
 	 * @return The names of the modiferKeys
 	 */
-	public Map<String, ModifierKey> getModifierKeys() {
+	public static Map<String, ModifierKey> getModifierKeys() {
 		Map<String, ModifierKey> modKeys = new HashMap<>();
 		modKeys.put("Shift", ModifierKey.SHIFT);
 		modKeys.put("Alt", ModifierKey.ALT);

@@ -15,6 +15,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -153,7 +154,26 @@ public class RunRobin extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Save the values!
+				Map<String, Object> args = new HashMap<>();
+				String name = "";
+				String value = "";
+				for(Node row:argPane.getChildren()) {
+					if(row instanceof HBox) {					
+						for(Node cell:((HBox) row).getChildren()) {
+							if(cell instanceof Label) {
+								name = ((Label)cell).getText();
+							} else if (cell instanceof TextField) {
+								value = ((TextField)cell).getText();
+							} else {
+								System.out.println("Save not imlemented for type: " + cell.getClass() );
+								name = "";
+								value = "";
+							}
+							args.put(name, value);
+						}
+					}
+				}
+				command.changeParameters(args);
 				editStage.close();
 			}
 		});

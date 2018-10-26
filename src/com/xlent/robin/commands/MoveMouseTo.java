@@ -28,10 +28,18 @@ public class MoveMouseTo extends Command {
 	public void changeParameters(Map<String, Object> args) {
 		Object xObj = args.get("x");
 		Object yObj = args.get("y");
-		if (xObj instanceof Integer && yObj instanceof Integer) {
+		if (xObj instanceof Integer) {
 			x = (int) xObj;
-			y = (int) yObj;
+		} else if (xObj instanceof String)  {
+			x = Integer.parseInt((String) xObj);
 		}
+		if (yObj instanceof Integer) {
+			y = (int) yObj;
+		} else if (yObj instanceof String)  {
+			y = Integer.parseInt((String) yObj);
+		}
+		this.arguments.put("x", x);
+		this.arguments.put("y", y);
 	}
 
 	@Override

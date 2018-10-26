@@ -17,7 +17,12 @@ public class Wait extends Command {
 
 	@Override
 	public void changeParameters(Map<String, Object> args) {
-		ms = (int) args.getOrDefault("Time", ms);
+		Object arg = args.get("Time (ms)");
+		if (arg instanceof Integer) {
+			ms = (int) arg;
+		} else if (arg instanceof String) {
+			ms = Integer.parseInt((String)arg);
+		}
 		arguments.put("Time (ms)", ms);
 	}
 
