@@ -15,19 +15,20 @@ public class PressKey extends Command {
 		super(name);
 		key = ' ';
 		modifierKeys = new Robin.ModifierKey[3];
+		modifierKeys[0] = ModifierKey.NON;
+		modifierKeys[1] = ModifierKey.NON;
+		modifierKeys[2] = ModifierKey.NON;
 		this.arguments.put("Key", key);
-		this.arguments.put("ModifierKey0", modifierKeys[0]);
-		this.arguments.put("ModifierKey1", modifierKeys[1]);
-		this.arguments.put("ModifierKey2", modifierKeys[2]);
+		this.arguments.put("ModifierKey0", ModifierKey.NON);
+		this.arguments.put("ModifierKey1", ModifierKey.NON);
+		this.arguments.put("ModifierKey2", ModifierKey.NON);
 	}
 
 	@Override
 	public void changeParameters(Map<String, Object> args) {
 		Object keyObj = args.get("Key");
-		if (keyObj instanceof char[]) {
-			key = (char) keyObj;
-		} else if (keyObj instanceof String) {
-			key = (char) ((String)keyObj).charAt(0);
+		if (keyObj instanceof String) {
+			key = ((String)keyObj).charAt(0);
 		}
 	
 		modifierKeys[0] = (ModifierKey) args.getOrDefault("ModifierKey", ModifierKey.NON);

@@ -5,13 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.xlent.robin.Robin.ModifierKey;
 import com.xlent.robin.commands.Command;
+import com.xlent.robin.commands.PressArrowKey;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -27,17 +31,52 @@ public class EditStage extends Stage {
 		this.command = command;
 
 		BorderPane editLayout = new BorderPane(); 
+		editLayout.setPadding(new Insets(10));
 		Map<String, Object> args = command.getArgunments();
 		List<Object> values = new ArrayList<>();
 		HBox pane;
 		VBox argPane = new VBox();
+		argPane.setPadding(new Insets(5));
 		for (String arg:args.keySet()) {
 			pane = new HBox();
-			pane.getChildren().add(new Label(arg));
-			TextField field = new TextField();
-			field.setText(args.get(arg).toString());
-			pane.getChildren().add(field);
-			values.add(field);
+			pane.setPadding(new Insets(2));
+			Object argObj = args.get(arg);
+			if(argObj instanceof String || argObj instanceof Integer || argObj instanceof Character) {
+				TextField field = new TextField();
+				field.setText(argObj.toString());
+				pane.getChildren().add(new Label(arg));
+				pane.getChildren().add(field);
+				values.add(field);
+			} else if (argObj instanceof ModifierKey) {
+				ComboBox<String> modifiers = new ComboBox<>();
+				Map<String, ModifierKey> modifierKeys = Robin.getModifierKeys();
+				modifiers.getItems().addAll( modifierKeys.keySet() );
+				for(String key:modifierKeys.keySet()) {
+					if(modifierKeys.get(key).equals(argObj)) {
+						modifiers.setValue(key);
+					}
+				}
+				pane.getChildren().add(new Label("Modifier Key"));
+				pane.getChildren().add(modifiers);
+				values.add(modifiers);
+			} else if (argObj instanceof PressArrowKey.ArrowKey) {
+				ComboBox<String> modifiers = new ComboBox<>();
+				Map<String, Object> argAlt = command.getArgumentAlternetivs();
+				modifiers.getItems().addAll( argAlt.keySet() );
+				for(String key:argAlt.keySet()) {
+					if(argAlt.get(key).equals(argObj)) {
+						modifiers.setValue(key);
+					}
+				}
+				pane.getChildren().add(new Label("Arrow Key"));
+				pane.getChildren().add(modifiers);
+				values.add(modifiers);
+			} else {
+				pane.getChildren().add(new Label(arg));
+				pane.getChildren().add(new Label(argObj!=null?argObj.toString():"n/a"));
+			}
+			
+			
 			argPane.getChildren().add(pane);
 		}
 		editLayout.setCenter(argPane);
@@ -58,6 +97,8 @@ public class EditStage extends Stage {
 								name = ((Label)cell).getText();
 							} else if (cell instanceof TextField) {
 								value = ((TextField)cell).getText();
+							} else if (cell instanceof ComboBox) {
+								value = ((ComboBox)cell).getValue().toString();							
 							} else {
 								System.out.println("Save not imlemented for type: " + cell.getClass() );
 								name = "";
@@ -84,8 +125,8 @@ public class EditStage extends Stage {
 
 		editLayout.setBottom(controlPane);
 
-		Scene editScene = new Scene(editLayout, 230, 100);
-
+		Scene editScene = new Scene(editLayout, 250, 200);
+		
 		setTitle("Edit " + command.getName() );
 		setScene(editScene);
 	}

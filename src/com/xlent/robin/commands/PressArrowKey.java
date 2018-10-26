@@ -10,7 +10,7 @@ import com.xlent.robin.commands.MouseClick.MouseButton;
 
 public class PressArrowKey extends Command {
 
-	enum ArrowKey {
+	public enum ArrowKey {
 		DOWN,
 		LEFT,
 		NON,
@@ -52,7 +52,7 @@ public class PressArrowKey extends Command {
 	
 	@Override
 	public void changeParameters(Map<String, Object> args) {
-		Object kpObj = args.getOrDefault("Key", this.keyPressed);
+		Object kpObj = args.get("Arrow Key");
 		if (kpObj instanceof ArrowKey) {
 			keyPressed = (ArrowKey) kpObj;
 		} else if (kpObj instanceof String) {
@@ -73,7 +73,7 @@ public class PressArrowKey extends Command {
 		arguments.put("Times", times);
 		arguments.put("ModifierKey", modifier);		
 	}
-
+	
 	@Override
 	public void run() {
 		switch (keyPressed) {
