@@ -128,76 +128,6 @@ public class RunRobin extends Application {
 		return commandList;
 	}
 	
-	private Stage getEditStage(Command command) {
-		
-		Stage editStage = new Stage();
-		
-		BorderPane editLayout = new BorderPane(); 
-		Map<String, Object> args = command.getArgunments();
-		List<Object> values = new ArrayList<>();
-		HBox pane;
-		VBox argPane = new VBox();
-		for (String arg:args.keySet()) {
-			pane = new HBox();
-			pane.getChildren().add(new Label(arg));
-			TextField field = new TextField();
-			field.setText(args.get(arg).toString());
-			pane.getChildren().add(field);
-			values.add(field);
-			argPane.getChildren().add(pane);
-		}
-		editLayout.setCenter(argPane);
-		
-		HBox controlPane = new HBox();
-		Button editSave = new Button("Save");
-		editSave.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Map<String, Object> args = new HashMap<>();
-				String name = "";
-				String value = "";
-				for(Node row:argPane.getChildren()) {
-					if(row instanceof HBox) {					
-						for(Node cell:((HBox) row).getChildren()) {
-							if(cell instanceof Label) {
-								name = ((Label)cell).getText();
-							} else if (cell instanceof TextField) {
-								value = ((TextField)cell).getText();
-							} else {
-								System.out.println("Save not imlemented for type: " + cell.getClass() );
-								name = "";
-								value = "";
-							}
-							args.put(name, value);
-						}
-					}
-				}
-				command.changeParameters(args);
-				editStage.close();
-			}
-		});
-		controlPane.getChildren().add(editSave);
-		Button editCancel = new Button("Cancel");
-		editCancel.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				editStage.close();
-			}
-		});
-		controlPane.getChildren().add(editCancel);
-		
-		editLayout.setBottom(controlPane);
-		
-        Scene editScene = new Scene(editLayout, 230, 100);
-         
-        editStage.setTitle("Edit " + command.getName() );
-        editStage.setScene(editScene);
-        
-		return editStage;
-	}
-	
 	private EventHandler<ActionEvent> saveBtnEventHandler = new EventHandler<ActionEvent>() {	
 		@Override
 		public void handle(ActionEvent event) {
@@ -262,7 +192,7 @@ public class RunRobin extends Application {
 		public void handle(ActionEvent event) {
 			Command command = commandListView.getSelectionModel().getSelectedItem();
 			if (command != null) {
-				Stage editWindow = getEditStage(command);
+				Stage editWindow = new EditStage(command);
 				editWindow.show();		
 			}
 				
