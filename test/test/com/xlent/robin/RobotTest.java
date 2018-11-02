@@ -6,7 +6,6 @@ import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.xlent.robin.Robin;

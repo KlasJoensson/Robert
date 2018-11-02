@@ -6,7 +6,6 @@ import java.util.Map;
 import com.xlent.robin.Robin;
 import com.xlent.robin.Robin.ModifierKey;
 import com.xlent.robin.commands.Command;
-import com.xlent.robin.commands.MouseClick.MouseButton;
 
 public class PressArrowKey extends Command {
 
@@ -27,9 +26,9 @@ public class PressArrowKey extends Command {
 		setKeyPressedFromName(name);
 		times = 1;
 		modifier = ModifierKey.NON;
-		arguments.put("Key", keyPressed);
+		arguments.put("Arrow Key", keyPressed);
 		arguments.put("Times", times);
-		arguments.put("ModifierKey", modifier);
+		arguments.put("Modifier Key", modifier);
 		argumentMap.put("Arrow up", ArrowKey.UP);
 		argumentMap.put("Arrow down", ArrowKey.DOWN);
 		argumentMap.put("Arrow right", ArrowKey.RIGHT);
@@ -55,11 +54,14 @@ public class PressArrowKey extends Command {
 		
 		setKeyPressedFromName( args.getOrDefault("Arrow Key", keyPressed.toString() ) );
 		times = Integer.parseInt(args.getOrDefault("Times", ""+this.times) );
-		modifier = Robin.getModifierKeys().getOrDefault(args.getOrDefault("Modifier Key", modifier.toString()), ModifierKey.NON);
+		String arg = args.getOrDefault("Modifier Key", modifier.toString());
 		
-		arguments.put("Key", keyPressed);
+		modifier = Robin.getModifierKeys().getOrDefault(arg, ModifierKey.NON);
+		
+		arguments.put("Arrow Key", keyPressed);
 		arguments.put("Times", times);
-		arguments.put("ModifierKey", modifier);		
+		arguments.put("Modifier Key", modifier);	
+
 	}
 	
 	@Override

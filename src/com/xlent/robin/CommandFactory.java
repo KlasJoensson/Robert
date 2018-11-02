@@ -56,7 +56,7 @@ public class CommandFactory {
 		return commandTree;
 	}
 	
-	public Command createCommand(String name, Map<String, Object> args) throws AWTException {
+	public Command createCommand(String name, Map<String, String> args) throws AWTException {
 		Command command = createCommand(name);
 		command.changeParameters(args);
 		

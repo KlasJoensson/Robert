@@ -26,16 +26,17 @@ import javafx.stage.Stage;
 public class EditStage extends Stage {
 
 	private Command command;
-
+	private VBox argPane;
+	
 	public EditStage(Command command) {
 		this.command = command;
-
+		
 		BorderPane editLayout = new BorderPane(); 
 		editLayout.setPadding(new Insets(10));
 		Map<String, Object> args = command.getArgunments();
 		List<Object> values = new ArrayList<>();
 		HBox pane;
-		VBox argPane = new VBox();
+		argPane = new VBox();
 		argPane.setPadding(new Insets(5));
 		for (String arg:args.keySet()) {
 			pane = new HBox();
@@ -51,12 +52,11 @@ public class EditStage extends Stage {
 				ComboBox<String> modifiers = new ComboBox<>();
 				Map<String, ModifierKey> modifierKeys = Robin.getModifierKeys();
 				modifiers.getItems().addAll( modifierKeys.keySet() );
-				/*for(String key:modifierKeys.keySet()) {
-					if(modifierKeys.get(key).equals(argObj)) {
+				for(String key:modifierKeys.keySet()) {
+					if(modifierKeys.get(key).equals((ModifierKey) argObj)) {
 						modifiers.setValue(key);
 					}
-				}*/
-				modifiers.setValue(arg);
+				}
 				pane.getChildren().add(new Label("Modifier Key"));
 				pane.getChildren().add(modifiers);
 				values.add(modifiers);
@@ -64,15 +64,11 @@ public class EditStage extends Stage {
 				ComboBox<String> modifiers = new ComboBox<>();
 				Map<String, Object> argAlt = command.getArgumentAlternetivs();
 				modifiers.getItems().addAll( argAlt.keySet() );
-				/*for(String key:argAlt.keySet()) {
+				for(String key:argAlt.keySet()) {
 					if(argAlt.get(key).equals(argObj)) {
 						modifiers.setValue(key);
 					}
-				}*/
-				modifiers.setValue(arg);
-				/*if (modifiers.getValue() == null) {
-					modifiers.setValue();
-				}*/
+				}
 				pane.getChildren().add(new Label("Arrow Key"));
 				pane.getChildren().add(modifiers);
 				values.add(modifiers);
@@ -88,44 +84,10 @@ public class EditStage extends Stage {
 
 		HBox controlPane = new HBox();
 		Button editSave = new Button("Save");
-		editSave.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Map<String, Object> args = new HashMap<>();
-				String name = "";
-				String value = "";
-				for(Node row:argPane.getChildren()) {
-					if(row instanceof HBox) {					
-						for(Node cell:((HBox) row).getChildren()) {
-							if(cell instanceof Label) {
-								name = ((Label)cell).getText();
-							} else if (cell instanceof TextField) {
-								value = ((TextField)cell).getText();
-							} else if (cell instanceof ComboBox) {
-								value = ((ComboBox)cell).getValue().toString();							
-							} else {
-								System.out.println("Save not imlemented for type: " + cell.getClass() );
-								name = "";
-								value = "";
-							}
-							args.put(name, value);
-						}
-					}
-				}
-				command.changeParameters(args);
-				close();
-			}
-		});
+		editSave.setOnAction(saveEventHandler);
 		controlPane.getChildren().add(editSave);
 		Button editCancel = new Button("Cancel");
-		editCancel.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				close();
-			}
-		});
+		editCancel.setOnAction(cancelEventHandler);
 		controlPane.getChildren().add(editCancel);
 
 		editLayout.setBottom(controlPane);
@@ -135,4 +97,42 @@ public class EditStage extends Stage {
 		setTitle("Edit " + command.getName() );
 		setScene(editScene);
 	}
+	
+	private EventHandler<ActionEvent> saveEventHandler = new EventHandler<ActionEvent>() {
+
+		@Override
+		public void handle(ActionEvent event) {
+			Map<String, String> args = new HashMap<>();
+			String name = "";
+			String value = "";
+			for(Node row:argPane.getChildren()) {
+				if(row instanceof HBox) {					
+					for(Node cell:((HBox) row).getChildren()) {
+						if(cell instanceof Label) {
+							name = ((Label)cell).getText();
+						} else if (cell instanceof TextField) {
+							value = ((TextField)cell).getText();
+						} else if (cell instanceof ComboBox) {
+							value = ((ComboBox)cell).getValue().toString();							
+						} else {
+							System.out.println("Save not implemented for type: " + cell.getClass() );
+							name = "";
+							value = "";
+						}
+						args.put(name, value);
+					}
+				}
+			}
+			command.changeParameters(args);
+			close();
+		}
+	};
+	
+	private EventHandler<ActionEvent> cancelEventHandler = new EventHandler<ActionEvent>() {
+
+		@Override
+		public void handle(ActionEvent event) {
+			close();
+		}
+	};
 }
