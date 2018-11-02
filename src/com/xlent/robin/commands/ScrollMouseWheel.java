@@ -20,13 +20,9 @@ public class ScrollMouseWheel extends Command {
 	}
 	
 	@Override
-	public void changeParameters(Map<String, Object> args) {
-		Object notchesObj = args.get("notches");
-		if (notchesObj instanceof Integer) {
-			this.notches = (int) notchesObj;
-		} else if (notchesObj instanceof String) {
-			this.notches = Integer.parseInt((String)notchesObj);
-		}
+	public void changeParameters(Map<String, String> args) {
+		
+		this.notches = Integer.parseInt(args.getOrDefault("notches", "" + notches));
 		
 		arguments.put("Notches", notches);
 	}

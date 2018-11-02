@@ -42,7 +42,7 @@ public abstract class Command {
 		return name;
 	}
 	
-	public abstract void changeParameters(Map<String, Object> args);
+	public abstract void changeParameters(Map<String, String> args);
 	
 	public abstract void run();
 }

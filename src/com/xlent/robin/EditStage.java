@@ -51,11 +51,12 @@ public class EditStage extends Stage {
 				ComboBox<String> modifiers = new ComboBox<>();
 				Map<String, ModifierKey> modifierKeys = Robin.getModifierKeys();
 				modifiers.getItems().addAll( modifierKeys.keySet() );
-				for(String key:modifierKeys.keySet()) {
+				/*for(String key:modifierKeys.keySet()) {
 					if(modifierKeys.get(key).equals(argObj)) {
 						modifiers.setValue(key);
 					}
-				}
+				}*/
+				modifiers.setValue(arg);
 				pane.getChildren().add(new Label("Modifier Key"));
 				pane.getChildren().add(modifiers);
 				values.add(modifiers);
@@ -63,11 +64,15 @@ public class EditStage extends Stage {
 				ComboBox<String> modifiers = new ComboBox<>();
 				Map<String, Object> argAlt = command.getArgumentAlternetivs();
 				modifiers.getItems().addAll( argAlt.keySet() );
-				for(String key:argAlt.keySet()) {
+				/*for(String key:argAlt.keySet()) {
 					if(argAlt.get(key).equals(argObj)) {
 						modifiers.setValue(key);
 					}
-				}
+				}*/
+				modifiers.setValue(arg);
+				/*if (modifiers.getValue() == null) {
+					modifiers.setValue();
+				}*/
 				pane.getChildren().add(new Label("Arrow Key"));
 				pane.getChildren().add(modifiers);
 				values.add(modifiers);

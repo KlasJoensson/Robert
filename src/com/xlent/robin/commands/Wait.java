@@ -16,13 +16,10 @@ public class Wait extends Command {
 	}
 
 	@Override
-	public void changeParameters(Map<String, Object> args) {
-		Object arg = args.get("Time (ms)");
-		if (arg instanceof Integer) {
-			ms = (int) arg;
-		} else if (arg instanceof String) {
-			ms = Integer.parseInt((String)arg);
-		}
+	public void changeParameters(Map<String, String> args) {
+	
+		ms = Integer.parseInt(args.getOrDefault("Time (ms)", "" + ms));
+		
 		arguments.put("Time (ms)", ms);
 	}
 

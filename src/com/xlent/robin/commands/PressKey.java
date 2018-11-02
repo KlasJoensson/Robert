@@ -25,31 +25,13 @@ public class PressKey extends Command {
 	}
 
 	@Override
-	public void changeParameters(Map<String, Object> args) {
-		Object keyObj = args.get("Key");
-		if (keyObj instanceof String) {
-			key = ((String)keyObj).charAt(0);
-		}
+	public void changeParameters(Map<String, String> args) {
+		String newKey = args.getOrDefault("Key", "" + key);
+		key = newKey.charAt(0);
 	
-		modifierKeys[0] = (ModifierKey) args.getOrDefault("ModifierKey", ModifierKey.NON);
-		Object modObj = args.get("ModifierKey0");
-		if(modObj instanceof ModifierKey) {
-			modifierKeys[0] = (ModifierKey) modObj;
-		} else if(modObj instanceof String) {
-			modifierKeys[0] = Robin.getModifierKeys().getOrDefault((String) modObj, ModifierKey.NON);
-		}
-		modObj = args.get("ModifierKey1");
-		if(modObj instanceof ModifierKey) {
-			modifierKeys[1] = (ModifierKey) modObj;
-		} else if(modObj instanceof String) {
-			modifierKeys[1] = Robin.getModifierKeys().getOrDefault((String) modObj, ModifierKey.NON);
-		}
-		modObj = args.get("ModifierKey2");
-		if(modObj instanceof ModifierKey) {
-			modifierKeys[2] = (ModifierKey) modObj;
-		} else if(modObj instanceof String) {
-			modifierKeys[2] = Robin.getModifierKeys().getOrDefault((String) modObj, ModifierKey.NON);
-		}
+		modifierKeys[0] = Robin.getModifierKeys().getOrDefault(args.getOrDefault("Modifier Key", modifierKeys[0].toString()), ModifierKey.NON);
+		modifierKeys[1] = Robin.getModifierKeys().getOrDefault(args.getOrDefault("Modifier Key", modifierKeys[1].toString()), ModifierKey.NON);
+		modifierKeys[2] = Robin.getModifierKeys().getOrDefault(args.getOrDefault("Modifier Key", modifierKeys[2].toString()), ModifierKey.NON);
 		
 		this.arguments.put("Key", key);
 		this.arguments.put("ModifierKey0", modifierKeys[0]);

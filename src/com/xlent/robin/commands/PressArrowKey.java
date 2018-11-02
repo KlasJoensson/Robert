@@ -51,24 +51,12 @@ public class PressArrowKey extends Command {
 	}
 	
 	@Override
-	public void changeParameters(Map<String, Object> args) {
-		Object kpObj = args.get("Arrow Key");
-		if (kpObj instanceof ArrowKey) {
-			keyPressed = (ArrowKey) kpObj;
-		} else if (kpObj instanceof String) {
-			setKeyPressedFromName( (String) kpObj );
-		}
-		Object tObj = args.getOrDefault("Times", this.times);
-		if (tObj instanceof Integer) {
-			times = (int) tObj;
-		}
+	public void changeParameters(Map<String, String> args) {
 		
-		Object modObj = args.get("ModifierKey");
-		if(modObj instanceof ModifierKey) {
-			modifier = (ModifierKey) modObj;
-		} else if(modObj instanceof String) {
-			modifier = Robin.getModifierKeys().getOrDefault((String) modObj, ModifierKey.NON);
-		}
+		setKeyPressedFromName( args.getOrDefault("Arrow Key", keyPressed.toString() ) );
+		times = Integer.parseInt(args.getOrDefault("Times", ""+this.times) );
+		modifier = Robin.getModifierKeys().getOrDefault(args.getOrDefault("Modifier Key", modifier.toString()), ModifierKey.NON);
+		
 		arguments.put("Key", keyPressed);
 		arguments.put("Times", times);
 		arguments.put("ModifierKey", modifier);		
