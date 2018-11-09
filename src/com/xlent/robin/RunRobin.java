@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * This class is for making use of the little robot Robin.
@@ -32,7 +33,6 @@ public class RunRobin extends Application {
 
 	private TreeView<TreeItem<String>> commandTreeView;
 	private ListView<Command> commandListView;
-	private List<Command> commandList = new ArrayList<>();
 	private CommandFactory commandFactory = new CommandFactory();
 	
 	@Override
@@ -99,7 +99,7 @@ public class RunRobin extends Application {
 		TreeView commandView = new TreeView();
 		TreeItem rootItem = new TreeItem("Commands");
 		
-		HashMap<String, ArrayList<String>> commands = Robin.getCommandsAsTree();
+		HashMap<String, ArrayList<String>> commands = commandFactory.getCommandsAsTree();
 		ArrayList<TreeItem> commandTree = new ArrayList<>();
 		TreeItem headerItem;
 		for(String header:commands.keySet()) {
@@ -145,11 +145,8 @@ public class RunRobin extends Application {
 	private EventHandler<ActionEvent> runBtnEventHandler = new EventHandler<ActionEvent>() {	
 		@Override
 		public void handle(ActionEvent event) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Not implemnetd");
-			alert.setHeaderText("Run button");
-			alert.setContentText("This button hasn't been implemneted yet");
-			alert.showAndWait();
+			List<Command> commands = commandListView.getItems();
+			commands.stream().forEach(command -> command.run() );		
 		}
 	};
 	
@@ -185,9 +182,15 @@ public class RunRobin extends Application {
 			Command command = commandListView.getSelectionModel().getSelectedItem();
 			if (command != null) {
 				Stage editWindow = new EditStage(command);
-				editWindow.show();		
+				editWindow.show();
+				editWindow.setOnHidden(new EventHandler<WindowEvent>() {
+
+					@Override
+					public void handle(WindowEvent event) {
+							commandListView.refresh();	
+					}
+				});
 			}
-				
 		}
 	};
 	

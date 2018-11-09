@@ -3,6 +3,7 @@ package com.xlent.robin.commands;
 import java.awt.AWTException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.xlent.robin.Robin;
 
@@ -37,7 +38,18 @@ public abstract class Command {
 	}
 	
 	public String toString() {
-		return name;
+		StringBuilder comandStr = new StringBuilder(name);
+		comandStr.append(" [ ");
+		Set<String> args = arguments.keySet();
+		for(String arg:args) {
+			comandStr.append(arg);
+			comandStr.append("=");
+			comandStr.append( arguments.get(arg) );
+			comandStr.append("; ");
+		}
+		comandStr.append("]");
+		
+		return comandStr.toString();
 	}
 	
 	public abstract void changeParameters(Map<String, String> args);
