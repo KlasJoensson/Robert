@@ -55,4 +55,8 @@ public abstract class Command {
 	public abstract void changeParameters(Map<String, String> args);
 	
 	public abstract void run();
+	
+	public String getSaveText() {
+		return toString();
+	}
 }

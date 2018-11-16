@@ -47,4 +47,20 @@ public class WriteText extends Command {
 		
 		return comandStr.toString();
 	}
+	
+	@Override
+	public String getSaveText() {
+		StringBuilder comandStr = new StringBuilder( getName() );
+		comandStr.append(" [ ");
+		Set<String> args = arguments.keySet();
+		for(String arg:args) {
+			comandStr.append(arg);
+			comandStr.append("=");
+			comandStr.append( text.replaceAll("\n", "|") );	
+			comandStr.append("; ");
+		}
+		comandStr.append("]");
+		
+		return comandStr.toString();
+	}
 }

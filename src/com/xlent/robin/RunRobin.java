@@ -1,9 +1,15 @@
 package com.xlent.robin;
 
 import java.awt.AWTException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.xlent.robin.commands.Command;
 
@@ -21,6 +27,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -34,10 +41,12 @@ public class RunRobin extends Application {
 	private TreeView<TreeItem<String>> commandTreeView;
 	private ListView<Command> commandListView;
 	private CommandFactory commandFactory = new CommandFactory();
+	private Stage robinsStage;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Robert - your RPA friend");
+		robinsStage = primaryStage;
+		robinsStage.setTitle("Robert - your RPA friend");
 		
 		BorderPane pane = new BorderPane();
 		pane.setPadding(new Insets(10));
@@ -53,8 +62,8 @@ public class RunRobin extends Application {
 		paneCenter.getChildren().add(commandListView);
 		
 		Scene scene = new Scene(pane, 600, 600);
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		robinsStage.setScene(scene);
+		robinsStage.show();
 	}
 
 	private VBox getMoveBtnPane() {
@@ -123,11 +132,28 @@ public class RunRobin extends Application {
 	private EventHandler<ActionEvent> saveBtnEventHandler = new EventHandler<ActionEvent>() {	
 		@Override
 		public void handle(ActionEvent event) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Not implemnetd");
-			alert.setHeaderText("Save button");
-			alert.setContentText("This button hasn't been implemneted yet");
-			alert.showAndWait();
+			FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save program");
+            fileChooser.setInitialDirectory( new File(System.getProperty("user.home")) );
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Robin command file", "*.rcf"));
+            File file = fileChooser.showSaveDialog(robinsStage);
+            if (file != null) {     	
+            	try {
+            		BufferedWriter writer = Files.newBufferedWriter(file.toPath());
+            		List<Command> commands = commandListView.getItems();
+        			commands.stream().forEach(command -> {
+						try {
+							writer.write( command.getSaveText() + "\n" );
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} );
+        			writer.flush();
+            		writer.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } 
+            }
 		}
 	};
 	
@@ -160,7 +186,6 @@ public class RunRobin extends Application {
 					Command command = commandFactory.createCommand(commandName);
 					commandListView.getItems().add(command);
 				} catch (AWTException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
