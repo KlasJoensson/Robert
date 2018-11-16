@@ -22,7 +22,7 @@ public class ScrollMouseWheel extends Command {
 	@Override
 	public void changeParameters(Map<String, String> args) {
 		
-		this.notches = Integer.parseInt(args.getOrDefault("notches", "" + notches));
+		this.notches = Integer.parseInt(args.getOrDefault("Notches", "" + notches));
 		
 		arguments.put("Notches", notches);
 	}
